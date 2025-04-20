@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1000</width>
-    <height>600</height>
+    <width>1400</width>
+    <height>800</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -87,7 +87,7 @@
     <rect>
      <x>200</x>
      <y>20</y>
-     <width>471</width>
+     <width>881</width>
      <height>81</height>
     </rect>
    </property>
@@ -96,7 +96,7 @@
 </string>
    </property>
    <property name="text">
-    <string>ELISTA</string>
+    <string>ELISTA, A CC15 FINAL PROJECT</string>
    </property>
   </widget>
   <widget class="Line" name="line">
@@ -105,7 +105,7 @@
      <x>170</x>
      <y>-10</y>
      <width>21</width>
-     <height>621</height>
+     <height>821</height>
     </rect>
    </property>
    <property name="orientation">
@@ -134,7 +134,7 @@
     <rect>
      <x>180</x>
      <y>140</y>
-     <width>841</width>
+     <width>1221</width>
      <height>20</height>
     </rect>
    </property>
@@ -177,7 +177,7 @@
   <widget class="QLabel" name="label_5">
    <property name="geometry">
     <rect>
-     <x>460</x>
+     <x>600</x>
      <y>160</y>
      <width>151</width>
      <height>41</height>
@@ -193,7 +193,7 @@
   <widget class="QLabel" name="label_6">
    <property name="geometry">
     <rect>
-     <x>730</x>
+     <x>1010</x>
      <y>160</y>
      <width>191</width>
      <height>41</height>
@@ -211,28 +211,28 @@
     <rect>
      <x>200</x>
      <y>240</y>
-     <width>251</width>
-     <height>341</height>
+     <width>381</width>
+     <height>541</height>
     </rect>
    </property>
   </widget>
   <widget class="QTableWidget" name="academicTable">
    <property name="geometry">
     <rect>
-     <x>460</x>
+     <x>600</x>
      <y>240</y>
-     <width>261</width>
-     <height>341</height>
+     <width>391</width>
+     <height>541</height>
     </rect>
    </property>
   </widget>
   <widget class="QTableWidget" name="miscTable">
    <property name="geometry">
     <rect>
-     <x>730</x>
+     <x>1010</x>
      <y>240</y>
-     <width>251</width>
-     <height>341</height>
+     <width>371</width>
+     <height>541</height>
     </rect>
    </property>
   </widget>
@@ -275,7 +275,7 @@
   <widget class="QLabel" name="label_8">
    <property name="geometry">
     <rect>
-     <x>460</x>
+     <x>600</x>
      <y>210</y>
      <width>71</width>
      <height>16</height>
@@ -291,7 +291,7 @@
   <widget class="QLabel" name="label_9">
    <property name="geometry">
     <rect>
-     <x>730</x>
+     <x>1010</x>
      <y>210</y>
      <width>71</width>
      <height>16</height>
@@ -307,7 +307,7 @@
   <widget class="QComboBox" name="academicBox">
    <property name="geometry">
     <rect>
-     <x>520</x>
+     <x>660</x>
      <y>210</y>
      <width>101</width>
      <height>22</height>
@@ -327,7 +327,7 @@
   <widget class="QComboBox" name="miscBox">
    <property name="geometry">
     <rect>
-     <x>790</x>
+     <x>1070</x>
      <y>210</y>
      <width>101</width>
      <height>22</height>

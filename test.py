@@ -105,10 +105,14 @@ class ElistaMainPage(QDialog):
 
         self.personalBox.currentTextChanged.connect(self.personalDynamicComboBoxes) 
         self.personalDynamicComboBoxes(self.personalBox.currentText()) 
+        
+        self.academicBox.currentTextChanged.connect(self.academicDynamicComboBoxes)
+        self.academicDynamicComboBoxes(self.academicBox.currentText())
 
+        self.miscBox.currentTextChanged.connect(self.miscDynamicComboBoxes)
+        self.miscDynamicComboBoxes(self.miscBox.currentText())
+        #JUST COPY FOR ALL        
 
-        #make a sorting algorithm
-    
     #MAKE TABLE HERE
     def personalDynamicComboBoxes(self,sortBy):
         if sortBy == "Priority":
@@ -117,9 +121,17 @@ class ElistaMainPage(QDialog):
             
             self.personalTable.setHorizontalHeaderLabels(["Task","Status","Priority"])
 
-        
-            
+            priorityData = Database.getSanitizedPriorityData(self.session,1) 
+            self.personalTable.setRowCount(len(priorityData))
 
+            tableRow = 0
+
+            for i in priorityData:
+                print(i)
+                self.personalTable.setItem(tableRow,0,QtWidgets.QTableWidgetItem(str(i[0])))
+                self.personalTable.setItem(tableRow,1,QtWidgets.QTableWidgetItem(str(i[1])))
+                self.personalTable.setItem(tableRow,2,QtWidgets.QTableWidgetItem(str(i[2])))
+                tableRow += 1
 
         if sortBy == "Deadline":
             self.personalTable.resizeRowsToContents()
@@ -132,18 +144,93 @@ class ElistaMainPage(QDialog):
 
             tableRow = 0
 
-            for i in deadlineData:
-                self.personalTable.setItem(tableRow,0,QtWidgets.QTableWidgetItem(str(i[0])))
-                self.personalTable.setItem(tableRow,1,QtWidgets.QTableWidgetItem(str(i[1])))
-                self.personalTable.setItem(tableRow,2,QtWidgets.QTableWidgetItem(str(i[2])))
+            for j in deadlineData:
+                print(j)
+                self.personalTable.setItem(tableRow,0,QtWidgets.QTableWidgetItem(str(j[0])))
+                self.personalTable.setItem(tableRow,1,QtWidgets.QTableWidgetItem(str(j[1])))
+                self.personalTable.setItem(tableRow,2,QtWidgets.QTableWidgetItem(str(j[2])))
+                tableRow += 1
+        
+    def academicDynamicComboBoxes(self,sortBy):
+        if sortBy == "Priority":
+            self.academicTable.resizeRowsToContents()
+            self.academicTable.setColumnCount(3)
+            
+            self.academicTable.setHorizontalHeaderLabels(["Task","Status","Priority"])
+
+            priorityData = Database.getSanitizedPriorityData(self.session,2) 
+            print(priorityData)
+            self.academicTable.setRowCount(len(priorityData))
+
+            tableRow = 0
+
+            for i in priorityData:
+                print(i)
+                self.academicTable.setItem(tableRow,0,QtWidgets.QTableWidgetItem(str(i[0])))
+                self.academicTable.setItem(tableRow,1,QtWidgets.QTableWidgetItem(str(i[1])))
+                self.academicTable.setItem(tableRow,2,QtWidgets.QTableWidgetItem(str(i[2])))
+                tableRow += 1
+        
+        if sortBy == "Deadline":
+            self.academicTable.resizeRowsToContents()
+            self.academicTable.setColumnCount(3)
+       
+            self.academicTable.setHorizontalHeaderLabels(["Task","Deadline","Status"])
+
+            deadlineData = Database.getSanitizedDeadlineData(self.session,2) 
+            self.academicTable.setRowCount(len(deadlineData))
+
+            tableRow = 0
+
+            for j in deadlineData:
+                print(j)
+                self.academicTable.setItem(tableRow,0,QtWidgets.QTableWidgetItem(str(j[0])))
+                self.academicTable.setItem(tableRow,1,QtWidgets.QTableWidgetItem(str(j[1])))
+                self.academicTable.setItem(tableRow,2,QtWidgets.QTableWidgetItem(str(j[2])))
                 tableRow += 1
 
+    def miscDynamicComboBoxes(self,sortBy):
+        if sortBy == "Priority":
+            self.miscTable.resizeRowsToContents()
+            self.miscTable.setColumnCount(3)
+            
+            self.miscTable.setHorizontalHeaderLabels(["Task","Status","Priority"])
+
+            priorityData = Database.getSanitizedPriorityData(self.session,3) 
+            print(priorityData)
+            self.miscTable.setRowCount(len(priorityData))
+
+            tableRow = 0
+
+            for i in priorityData:
+                print(i)
+                self.miscTable.setItem(tableRow,0,QtWidgets.QTableWidgetItem(str(i[0])))
+                self.miscTable.setItem(tableRow,1,QtWidgets.QTableWidgetItem(str(i[1])))
+                self.miscTable.setItem(tableRow,2,QtWidgets.QTableWidgetItem(str(i[2])))
+                tableRow += 1
+
+        if sortBy == "Deadline":
+            self.miscTable.resizeRowsToContents()
+            self.miscTable.setColumnCount(3)
+       
+            self.miscTable.setHorizontalHeaderLabels(["Task","Deadline","Status"])
+
+            deadlineData = Database.getSanitizedDeadlineData(self.session,2) 
+            self.miscTable.setRowCount(len(deadlineData))
+
+            tableRow = 0
+
+            for j in deadlineData:
+                print(j)
+                self.miscTable.setItem(tableRow,0,QtWidgets.QTableWidgetItem(str(j[0])))
+                self.miscTable.setItem(tableRow,1,QtWidgets.QTableWidgetItem(str(j[1])))
+                self.miscTable.setItem(tableRow,2,QtWidgets.QTableWidgetItem(str(j[2])))
+                tableRow += 1
             
             
             
 
-            #DONT FORGET SESSION TOO
-
+          
 
 
         
@@ -232,8 +319,8 @@ class Login(QDialog):
             loggedIn = ElistaMainPage(session)
             widget.addWidget(loggedIn)
             widget.setCurrentIndex(widget.currentIndex() + 1)
-            widget.setFixedWidth(1000)
-            widget.setFixedHeight(600)
+            widget.setFixedWidth(1400)
+            widget.setFixedHeight(800)
 
 
 
@@ -271,15 +358,22 @@ class Signup(QDialog):
 
 class Database():
     @staticmethod
-    def getSanitizedDeadlineData(session,typeId):
+    def getSanitizedPriorityData(session,typeId):
         data = (session,typeId)
-        query = """SELECT TaskName,deadline,statusname FROM Tasks LEFT JOIN TaskStatus ON Tasks.statusId = TaskStatus.statusId WHERE userId = %s AND typeId = %s;"""
+        query = """SELECT taskname,priorityname,statusname FROM tasks INNER JOIN taskstatus ON tasks.statusid = taskstatus.statusid INNER JOIN taskpriority ON tasks.priorityid = taskpriority.priorityid WHERE userid = %s AND typeId = %s ORDER BY taskpriority.priorityid ASC"""
         cursor.execute(query,data)
         result = cursor.fetchall()
-
         print(result)
         return result
 
+    @staticmethod
+    def getSanitizedDeadlineData(session,typeId):
+        data = (session,typeId)
+        query = """SELECT TaskName,deadline,statusname FROM Tasks LEFT JOIN TaskStatus ON Tasks.statusId = TaskStatus.statusId WHERE userId = %s AND typeId = %s ORDER BY deadline ASC"""
+        cursor.execute(query,data)
+        result = cursor.fetchall()
+        print(result)
+        return result
 
     @staticmethod
     def sanitizedInsertTask(taskOwner,taskPriority,taskType,taskStatus,taskName,taskDeadline):
