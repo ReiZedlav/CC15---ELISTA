@@ -211,9 +211,16 @@
     <rect>
      <x>200</x>
      <y>240</y>
-     <width>381</width>
+     <width>371</width>
      <height>541</height>
     </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QScrollBar:vertical, QScrollBar:horizontal {
+        background: transparent;
+        width: 0px;
+        height: 0px;
+    }</string>
    </property>
   </widget>
   <widget class="QTableWidget" name="academicTable">
@@ -221,19 +228,33 @@
     <rect>
      <x>600</x>
      <y>240</y>
-     <width>391</width>
+     <width>371</width>
      <height>541</height>
     </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QScrollBar:vertical, QScrollBar:horizontal {
+        background: transparent;
+        width: 0px;
+        height: 0px;
+    }</string>
    </property>
   </widget>
   <widget class="QTableWidget" name="miscTable">
    <property name="geometry">
     <rect>
-     <x>1010</x>
+     <x>1000</x>
      <y>240</y>
      <width>371</width>
      <height>541</height>
     </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QScrollBar:vertical, QScrollBar:horizontal {
+        background: transparent;
+        width: 0px;
+        height: 0px;
+    }</string>
    </property>
   </widget>
   <widget class="QComboBox" name="personalBox">

@@ -1,7 +1,7 @@
 from PyQt5.QtCore import Qt
 from PyQt5 import QtWidgets
-from PyQt5.QtWidgets import QApplication,QWidget,QLabel,QPushButton,QVBoxLayout,QHBoxLayout,QLineEdit,QGridLayout,QMainWindow,QMessageBox,QTextEdit, QDialog
-from PyQt5.QtGui import QFont
+from PyQt5.QtWidgets import QApplication,QWidget,QLabel,QPushButton,QVBoxLayout,QHBoxLayout,QLineEdit,QGridLayout,QMainWindow,QMessageBox,QTextEdit, QDialog,QTableWidget
+from PyQt5.QtGui import QFont, QGuiApplication
 from PyQt5.uic import loadUi
 import mysql.connector
 import bcrypt
@@ -15,14 +15,18 @@ class ElistaAddOperation(QDialog):
     def __init__(self,session):
         super().__init__()
         self.session = session
-        loadUi("elistaDbOperationsAdd.ui",self)
-        self.cNameOperationsLabel.setText(Database.getUsername(self.session))
-        self.addAuthenticatedButton.clicked.connect(self.dbOperations)
-        self.updateAuthenticatedButton.clicked.connect(self.dbOperations)
-        self.returnAuthenticatedButton.clicked.connect(self.dbOperations)
+        loadUi("elistaAdd.ui",self)
 
         #task adder functionality here
         self.addTaskSubmitBox.clicked.connect(self.addTask)
+        self.taskAdderReturn.clicked.connect(self.returnToMainPage)
+
+    def returnToMainPage(self):
+        loggedIn = ElistaMainPage(self.session)
+        widget.addWidget(loggedIn)
+        widget.setCurrentIndex(widget.currentIndex() + 1)
+        widget.setFixedWidth(1400)
+        widget.setFixedHeight(800)
 
     def addTask(self):
         taskOwner = self.session
@@ -38,56 +42,57 @@ class ElistaAddOperation(QDialog):
 
         Utilities.successfulAction()
 
+class ElistaEditOperation(QDialog):
+    def __init__(self,session,taskId):
+        super().__init__()
+        self.session = session
+        self.taskId = taskId
+        loadUi("elistaUpdate.ui",self)
 
-
-    def dbOperations(self):
-        pressed = self.sender()
-
-        if pressed == self.addAuthenticatedButton:
-            print("it works!")
-            add = ElistaAddOperation(self.session)
-            widget.addWidget(add)
-            widget.setCurrentIndex(widget.currentIndex() + 1)
-
+        self.reviseTaskId.setText(str(taskId))
+        self.reviseNameBox.setText(Database.getSanitizedTaskName(self.taskId))
         
-        elif pressed == self.updateAuthenticatedButton:
-            pass #ELISTA UPDATE PAGE
-                
-        elif pressed == self.returnAuthenticatedButton:
-            print("it works!")
-            EmainPage = ElistaMainPage(self.session)
-            widget.addWidget(EmainPage)
-            widget.setCurrentIndex(widget.currentIndex() + 1)
+        self.reviseCancelButton.clicked.connect(self.returnToMainPage)
+        self.reviseDiscardButton.clicked.connect(self.removeTask)
 
+        self.reviseUpdateButton.clicked.connect(self.updateTask)
+
+
+
+    #MAKE UPDATE
+    def updateTask(self):
+        updateName = self.reviseNameBox.text()
+        updatePriority = self.revisePriorityBox.currentText()
+        updateStatus = self.reviseStatusBox.currentText()
+        updateType = self.reviseTypeBox.currentText()
+        updateDeadline = self.reviseDeadlineBox.date().toString("yyyy-MM-dd")
+
+        Database.sanitizedUpdateTask(updateName,updatePriority,updateStatus,updateType,updateDeadline,self.taskId)
+
+        Utilities.successfulAction()
+
+        loggedIn = ElistaMainPage(self.session)
+        widget.addWidget(loggedIn)
+        widget.setCurrentIndex(widget.currentIndex() + 1)
+        widget.setFixedWidth(1400)
+        widget.setFixedHeight(800)
+
+
+
+    def returnToMainPage(self):
+        loggedIn = ElistaMainPage(self.session)
+        widget.addWidget(loggedIn)
+        widget.setCurrentIndex(widget.currentIndex() + 1)
+        widget.setFixedWidth(1400)
+        widget.setFixedHeight(800)
+
+    def removeTask(self):
+        Database.sanitizedDeleteTask(self.taskId)
+        self.returnToMainPage()
+
+   
 #CREATE ELISTA UPDATE PAGE
 #CREATE ELISTA DELETE PAGE
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -111,15 +116,81 @@ class ElistaMainPage(QDialog):
 
         self.miscBox.currentTextChanged.connect(self.miscDynamicComboBoxes)
         self.miscDynamicComboBoxes(self.miscBox.currentText())
-        #JUST COPY FOR ALL        
+
+        #table configurations
+        self.personalTable.setEditTriggers(QTableWidget.NoEditTriggers)
+        self.personalTable.setSelectionBehavior(QTableWidget.SelectRows)
+        self.personalTable.verticalHeader().setVisible(False)
+
+        self.academicTable.setEditTriggers(QTableWidget.NoEditTriggers)
+        self.academicTable.setSelectionBehavior(QTableWidget.SelectRows)
+        self.academicTable.verticalHeader().setVisible(False)
+
+        self.miscTable.setEditTriggers(QTableWidget.NoEditTriggers)
+        self.miscTable.setSelectionBehavior(QTableWidget.SelectRows)
+        self.miscTable.verticalHeader().setVisible(False)
+
+        #CREATE CLICK TABLE ROW EVENT
+
+        self.personalTable.cellDoubleClicked.connect(self.rowClickEventOne)
+        self.academicTable.cellDoubleClicked.connect(self.rowClickEventTwo)
+        self.miscTable.cellDoubleClicked.connect(self.rowClickEventThree)
+
+
+    def rowClickEventOne(self, row, column):
+        row_data = []
+        for col in range(self.personalTable.columnCount()):
+            item = self.personalTable.item(row, col)
+            row_data.append(item.text() if item else "")
+        #CREATE A DELETER AND UPDATER HERE
+
+
+        #(self,session,taskId)
+        
+        edit = ElistaEditOperation(self.session,row_data[3]) 
+        widget.setFixedWidth(480)
+        widget.setFixedHeight(600)
+        widget.addWidget(edit)
+        widget.setCurrentIndex(widget.currentIndex() + 1) 
+
+        print("Row clicked:", row_data)
+    
+    def rowClickEventTwo(self,row,column):
+        row_data = []
+        for col in range(self.academicTable.columnCount()):
+            item = self.academicTable.item(row, col)
+            row_data.append(item.text() if item else "")
+        
+        edit = ElistaEditOperation(self.session,row_data[3]) 
+        widget.setFixedWidth(480)
+        widget.setFixedHeight(600)
+        widget.addWidget(edit)
+        widget.setCurrentIndex(widget.currentIndex() + 1) 
+
+        print("Row clicked:", row_data)
+    
+    def rowClickEventThree(self,row,column):
+        row_data = []
+        for col in range(self.miscTable.columnCount()):
+            item = self.miscTable.item(row, col)
+            row_data.append(item.text() if item else "")
+        
+        edit = ElistaEditOperation(self.session,row_data[3]) 
+        widget.setFixedWidth(480)
+        widget.setFixedHeight(600)
+        widget.addWidget(edit)
+        widget.setCurrentIndex(widget.currentIndex() + 1) 
+
+        print("Row clicked:", row_data)
+
 
     #MAKE TABLE HERE
     def personalDynamicComboBoxes(self,sortBy):
         if sortBy == "Priority":
             self.personalTable.resizeRowsToContents()
-            self.personalTable.setColumnCount(3)
+            self.personalTable.setColumnCount(4)
             
-            self.personalTable.setHorizontalHeaderLabels(["Task","Status","Priority"])
+            self.personalTable.setHorizontalHeaderLabels(["Task","Priority","Status","Task ID"])
 
             priorityData = Database.getSanitizedPriorityData(self.session,1) 
             self.personalTable.setRowCount(len(priorityData))
@@ -131,13 +202,14 @@ class ElistaMainPage(QDialog):
                 self.personalTable.setItem(tableRow,0,QtWidgets.QTableWidgetItem(str(i[0])))
                 self.personalTable.setItem(tableRow,1,QtWidgets.QTableWidgetItem(str(i[1])))
                 self.personalTable.setItem(tableRow,2,QtWidgets.QTableWidgetItem(str(i[2])))
+                self.personalTable.setItem(tableRow,3,QtWidgets.QTableWidgetItem(str(i[3])))
                 tableRow += 1
 
         if sortBy == "Deadline":
             self.personalTable.resizeRowsToContents()
-            self.personalTable.setColumnCount(3)
+            self.personalTable.setColumnCount(4)
        
-            self.personalTable.setHorizontalHeaderLabels(["Task","Deadline","Status"])
+            self.personalTable.setHorizontalHeaderLabels(["Task","Deadline","Status", "Task ID"])
 
             deadlineData = Database.getSanitizedDeadlineData(self.session,1) 
             self.personalTable.setRowCount(len(deadlineData))
@@ -149,14 +221,15 @@ class ElistaMainPage(QDialog):
                 self.personalTable.setItem(tableRow,0,QtWidgets.QTableWidgetItem(str(j[0])))
                 self.personalTable.setItem(tableRow,1,QtWidgets.QTableWidgetItem(str(j[1])))
                 self.personalTable.setItem(tableRow,2,QtWidgets.QTableWidgetItem(str(j[2])))
+                self.personalTable.setItem(tableRow,3,QtWidgets.QTableWidgetItem(str(j[3])))
                 tableRow += 1
         
     def academicDynamicComboBoxes(self,sortBy):
         if sortBy == "Priority":
             self.academicTable.resizeRowsToContents()
-            self.academicTable.setColumnCount(3)
+            self.academicTable.setColumnCount(4)
             
-            self.academicTable.setHorizontalHeaderLabels(["Task","Status","Priority"])
+            self.academicTable.setHorizontalHeaderLabels(["Task","Priority","Status","Task ID"])
 
             priorityData = Database.getSanitizedPriorityData(self.session,2) 
             print(priorityData)
@@ -169,13 +242,14 @@ class ElistaMainPage(QDialog):
                 self.academicTable.setItem(tableRow,0,QtWidgets.QTableWidgetItem(str(i[0])))
                 self.academicTable.setItem(tableRow,1,QtWidgets.QTableWidgetItem(str(i[1])))
                 self.academicTable.setItem(tableRow,2,QtWidgets.QTableWidgetItem(str(i[2])))
+                self.academicTable.setItem(tableRow,3,QtWidgets.QTableWidgetItem(str(i[3])))
                 tableRow += 1
         
         if sortBy == "Deadline":
             self.academicTable.resizeRowsToContents()
-            self.academicTable.setColumnCount(3)
+            self.academicTable.setColumnCount(4)
        
-            self.academicTable.setHorizontalHeaderLabels(["Task","Deadline","Status"])
+            self.academicTable.setHorizontalHeaderLabels(["Task","Deadline","Status","Task ID"])
 
             deadlineData = Database.getSanitizedDeadlineData(self.session,2) 
             self.academicTable.setRowCount(len(deadlineData))
@@ -187,14 +261,15 @@ class ElistaMainPage(QDialog):
                 self.academicTable.setItem(tableRow,0,QtWidgets.QTableWidgetItem(str(j[0])))
                 self.academicTable.setItem(tableRow,1,QtWidgets.QTableWidgetItem(str(j[1])))
                 self.academicTable.setItem(tableRow,2,QtWidgets.QTableWidgetItem(str(j[2])))
+                self.academicTable.setItem(tableRow,3,QtWidgets.QTableWidgetItem(str(j[3])))
                 tableRow += 1
 
     def miscDynamicComboBoxes(self,sortBy):
         if sortBy == "Priority":
             self.miscTable.resizeRowsToContents()
-            self.miscTable.setColumnCount(3)
+            self.miscTable.setColumnCount(4)
             
-            self.miscTable.setHorizontalHeaderLabels(["Task","Status","Priority"])
+            self.miscTable.setHorizontalHeaderLabels(["Task","Priority","Status","Task ID"])
 
             priorityData = Database.getSanitizedPriorityData(self.session,3) 
             print(priorityData)
@@ -207,15 +282,16 @@ class ElistaMainPage(QDialog):
                 self.miscTable.setItem(tableRow,0,QtWidgets.QTableWidgetItem(str(i[0])))
                 self.miscTable.setItem(tableRow,1,QtWidgets.QTableWidgetItem(str(i[1])))
                 self.miscTable.setItem(tableRow,2,QtWidgets.QTableWidgetItem(str(i[2])))
+                self.miscTable.setItem(tableRow,3,QtWidgets.QTableWidgetItem(str(i[3])))
                 tableRow += 1
 
         if sortBy == "Deadline":
             self.miscTable.resizeRowsToContents()
-            self.miscTable.setColumnCount(3)
+            self.miscTable.setColumnCount(4)
        
-            self.miscTable.setHorizontalHeaderLabels(["Task","Deadline","Status"])
+            self.miscTable.setHorizontalHeaderLabels(["Task","Deadline","Status","Task ID"])
 
-            deadlineData = Database.getSanitizedDeadlineData(self.session,2) 
+            deadlineData = Database.getSanitizedDeadlineData(self.session,3) 
             self.miscTable.setRowCount(len(deadlineData))
 
             tableRow = 0
@@ -225,6 +301,7 @@ class ElistaMainPage(QDialog):
                 self.miscTable.setItem(tableRow,0,QtWidgets.QTableWidgetItem(str(j[0])))
                 self.miscTable.setItem(tableRow,1,QtWidgets.QTableWidgetItem(str(j[1])))
                 self.miscTable.setItem(tableRow,2,QtWidgets.QTableWidgetItem(str(j[2])))
+                self.miscTable.setItem(tableRow,3,QtWidgets.QTableWidgetItem(str(j[3])))
                 tableRow += 1
             
             
@@ -255,6 +332,8 @@ class ElistaMainPage(QDialog):
 
             #make a CREATE READ UPDATE CLASS. MAKE THIS ONE FIRST
             crud = ElistaAddOperation(self.session)
+            widget.setFixedWidth(480)
+            widget.setFixedHeight(600)
             widget.addWidget(crud)
             widget.setCurrentIndex(widget.currentIndex() + 1) 
 
@@ -355,12 +434,40 @@ class Signup(QDialog):
                 widget.addWidget(goBack)
                 widget.setCurrentIndex(widget.currentIndex()+1)
 
+typeDict = {
+    "Personal": 1,
+    "Academic": 2,
+    "Miscellaneous": 3
+}
+
+priorityDict = {
+    "Urgent": 1,
+    "High": 2,
+    "Average": 3,
+    "Low": 4,
+    "Optional": 5
+}
+
+statusDict = {
+    "Completed": 1,
+    "Concluding": 2,
+    "In Progress": 3,
+    "Pending": 4,
+}
 
 class Database():
+    def sanitizedDeleteTask(taskId):
+        data = (taskId,)
+        query = """DELETE FROM Tasks where taskid = %s"""
+        cursor.execute(query,data)
+        connection.commit()
+        
+    
+
     @staticmethod
     def getSanitizedPriorityData(session,typeId):
         data = (session,typeId)
-        query = """SELECT taskname,priorityname,statusname FROM tasks INNER JOIN taskstatus ON tasks.statusid = taskstatus.statusid INNER JOIN taskpriority ON tasks.priorityid = taskpriority.priorityid WHERE userid = %s AND typeId = %s ORDER BY taskpriority.priorityid ASC"""
+        query = """SELECT taskname,priorityname,statusname,taskid FROM tasks INNER JOIN taskstatus ON tasks.statusid = taskstatus.statusid INNER JOIN taskpriority ON tasks.priorityid = taskpriority.priorityid WHERE userid = %s AND typeId = %s ORDER BY taskpriority.priorityid ASC,taskstatus.statusid DESC"""
         cursor.execute(query,data)
         result = cursor.fetchall()
         print(result)
@@ -369,7 +476,7 @@ class Database():
     @staticmethod
     def getSanitizedDeadlineData(session,typeId):
         data = (session,typeId)
-        query = """SELECT TaskName,deadline,statusname FROM Tasks LEFT JOIN TaskStatus ON Tasks.statusId = TaskStatus.statusId WHERE userId = %s AND typeId = %s ORDER BY deadline ASC"""
+        query = """SELECT TaskName,deadline,statusname,taskid FROM Tasks LEFT JOIN TaskStatus ON Tasks.statusId = TaskStatus.statusId WHERE userId = %s AND typeId = %s ORDER BY deadline ASC,taskstatus.statusid DESC"""
         cursor.execute(query,data)
         result = cursor.fetchall()
         print(result)
@@ -377,33 +484,21 @@ class Database():
 
     @staticmethod
     def sanitizedInsertTask(taskOwner,taskPriority,taskType,taskStatus,taskName,taskDeadline):
-        typeDict = {
-            "Personal": 1,
-            "Academic": 2,
-            "Miscellaneous": 3
-        }
-
-        priorityDict = {
-            "Urgent": 1,
-            "High": 2,
-            "Average": 3,
-            "Low": 4,
-            "Optional": 5
-        }
-
-        statusDict = {
-            "Completed": 1,
-            "Concluding": 2,
-            "In progress": 3,
-            "Pending": 4,
-        }
-
         data = (taskOwner,priorityDict[taskPriority],typeDict[taskType],statusDict[taskStatus],taskName,taskDeadline,)
         query = """INSERT INTO Tasks(userId,priorityId,typeId,statusId,taskName,deadline) VALUES (%s,%s,%s,%s,%s,%s)"""
 
         cursor.execute(query,data)
         connection.commit()
 
+    def sanitizedUpdateTask(taskname,taskpriority,taskstatus,tasktype,taskdeadline,taskid):
+        data = (taskname,priorityDict[taskpriority],statusDict[taskstatus],typeDict[tasktype],taskdeadline,taskid)
+        query = """UPDATE Tasks SET taskname = %s, priorityid = %s, statusid = %s, typeid = %s, deadline = %s WHERE taskid = %s"""
+
+        cursor.execute(query,data)
+        connection.commit()
+        
+
+        
 
 
 
@@ -420,6 +515,15 @@ class Database():
         connection.commit()
 
         return True
+
+    @staticmethod
+    def getSanitizedTaskName(taskid):
+        data = (taskid,)
+        query = """SELECT taskname FROM tasks WHERE taskid = %s"""
+        cursor.execute(query,data)
+        result = cursor.fetchall()
+
+        return result[0][0]
     
     @staticmethod
     def sanitizedLogin(username,password):
