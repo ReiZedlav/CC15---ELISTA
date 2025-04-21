@@ -220,7 +220,16 @@
         background: transparent;
         width: 0px;
         height: 0px;
-    }</string>
+    }
+
+QToolTip {
+    font-size: 18px;
+    color: white;
+    background-color: #333;
+    border: 1px solid #aaa;
+    padding: 6px;
+    border-radius: 4px;
+}</string>
    </property>
   </widget>
   <widget class="QTableWidget" name="academicTable">

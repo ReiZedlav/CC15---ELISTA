@@ -1,6 +1,6 @@
 from PyQt5.QtCore import Qt
 from PyQt5 import QtWidgets
-from PyQt5.QtWidgets import QApplication,QWidget,QLabel,QPushButton,QVBoxLayout,QHBoxLayout,QLineEdit,QGridLayout,QMainWindow,QMessageBox,QTextEdit, QDialog,QTableWidget
+from PyQt5.QtWidgets import QApplication,QWidget,QLabel,QPushButton,QVBoxLayout,QHBoxLayout,QLineEdit,QGridLayout,QMainWindow,QMessageBox,QTextEdit, QDialog,QTableWidget, QHeaderView
 from PyQt5.QtGui import QFont, QGuiApplication
 from PyQt5.uic import loadUi
 import mysql.connector
@@ -121,21 +121,24 @@ class ElistaMainPage(QDialog):
         self.personalTable.setEditTriggers(QTableWidget.NoEditTriggers)
         self.personalTable.setSelectionBehavior(QTableWidget.SelectRows)
         self.personalTable.verticalHeader().setVisible(False)
+        self.personalTable.setColumnHidden(3, True)
+
 
         self.academicTable.setEditTriggers(QTableWidget.NoEditTriggers)
         self.academicTable.setSelectionBehavior(QTableWidget.SelectRows)
         self.academicTable.verticalHeader().setVisible(False)
+        self.academicTable.setColumnHidden(3, True)
 
         self.miscTable.setEditTriggers(QTableWidget.NoEditTriggers)
         self.miscTable.setSelectionBehavior(QTableWidget.SelectRows)
         self.miscTable.verticalHeader().setVisible(False)
+        self.miscTable.setColumnHidden(3, True)
 
         #CREATE CLICK TABLE ROW EVENT
 
         self.personalTable.cellDoubleClicked.connect(self.rowClickEventOne)
         self.academicTable.cellDoubleClicked.connect(self.rowClickEventTwo)
         self.miscTable.cellDoubleClicked.connect(self.rowClickEventThree)
-
 
     def rowClickEventOne(self, row, column):
         row_data = []
@@ -323,8 +326,11 @@ class ElistaMainPage(QDialog):
         pressed = self.sender()
 
         if pressed == self.firstAuthenticatedButton:
-            #DEFAULT SCREEN, VIEW ALL DATA
-            print("first")
+            loggedIn = ElistaMainPage(self.session)
+            widget.addWidget(loggedIn)
+            widget.setCurrentIndex(widget.currentIndex() + 1)
+            widget.setFixedWidth(1400)
+            widget.setFixedHeight(800)
             
 
 
