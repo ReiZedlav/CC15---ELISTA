@@ -6,11 +6,104 @@ from PyQt5.uic import loadUi
 import mysql.connector
 import bcrypt
 
+#CHANGE THE LOCATION OF ADDING TO THE TOP OF type
+
 #DATABASE CONFIGURATION
 connection = mysql.connector.connect(host="localhost",database="cc15",user="root",password="root")
 cursor = connection.cursor(prepared=True)
 
-#CREATE ELISTA ADD PAGE
+class ElistaCalendarOperation(QDialog):
+    def __init__(self,session):
+        super().__init__()
+        self.session = session
+        loadUi("elistaCalendar.ui",self)
+        self.authenticatedNameLabel.setText(Database.getUsername(session))
+        #create updating buttons
+        self.firstAuthenticatedButton.clicked.connect(self.dynamicButton)
+        self.secondAuthenticatedButton.clicked.connect(self.dynamicButton)
+        self.thirdAuthenticatedButton.clicked.connect(self.dynamicButton)
+        self.fourthAuthenticatedButton.clicked.connect(self.dynamicButton)
+
+        self.calendarBox.currentTextChanged.connect(self.calendarDynamicComboBox) 
+        self.calendarDynamicComboBox(self.calendarBox.currentText()) 
+    
+    def editTable(self,typeTable):
+        tableRow = 0
+        for i in typeTable:
+            print(i)
+            self.calendarTable.setItem(tableRow,0,QtWidgets.QTableWidgetItem(str(i[0])))
+            self.calendarTable.setItem(tableRow,1,QtWidgets.QTableWidgetItem(str(i[1])))
+            self.calendarTable.setItem(tableRow,2,QtWidgets.QTableWidgetItem(str(i[2])))
+            self.calendarTable.setItem(tableRow,3,QtWidgets.QTableWidgetItem(str(i[3])))
+            tableRow += 1
+            
+    def calendarDynamicComboBox(self,sortBy):
+        if sortBy == "Priority":
+            self.calendarTable.resizeRowsToContents()
+            self.calendarTable.setColumnCount(4)
+            self.calendarTable.setHorizontalHeaderLabels(["Task","Priority","Type","TaskID"])
+
+            priorityData = Database.getSanitizedCalendarPriorityData(self.session) 
+
+            self.calendarTable.setRowCount(len(priorityData))
+
+            self.editTable(priorityData)
+
+        if sortBy == "Deadline":
+            self.calendarTable.resizeRowsToContents()
+            self.calendarTable.setColumnCount(4)
+            self.calendarTable.setHorizontalHeaderLabels(["Task","Deadline","Type","TaskID"])
+
+            deadlineData = Database.getSanitizedCalendarDeadlineData(self.session)
+
+            tableRow = 0
+
+            self.editTable(deadlineData)
+
+            
+        if sortBy == "Status":
+            self.calendarTable.resizeRowsToContents()
+            self.calendarTable.setColumnCount(4)
+            self.calendarTable.setHorizontalHeaderLabels(["Task","Status","Type","TaskID"])
+        
+            statusData = Database.getSanitizedCalendarStatusData(self.session)
+
+            self.editTable(statusData)
+
+    
+    
+    def dynamicButton(self):
+        pressed = self.sender()
+
+        if pressed == self.firstAuthenticatedButton:
+            loggedIn = ElistaMainPage(self.session)
+            widget.addWidget(loggedIn)
+            widget.setCurrentIndex(widget.currentIndex() + 1)
+            widget.setFixedWidth(1400)
+            widget.setFixedHeight(800)
+            
+
+
+        elif pressed == self.secondAuthenticatedButton: #GOBACK HERE
+
+            #make a CREATE READ UPDATE CLASS. MAKE THIS ONE FIRST
+            crud = ElistaAddOperation(self.session)
+            widget.setFixedWidth(480)
+            widget.setFixedHeight(600)
+            widget.addWidget(crud)
+            widget.setCurrentIndex(widget.currentIndex() + 1) 
+
+
+        elif pressed == self.thirdAuthenticatedButton:
+            calendar = ElistaCalendarOperation(self.session) 
+            widget.addWidget(calendar)
+            widget.setCurrentIndex(widget.currentIndex() + 1) 
+
+
+        elif pressed == self.fourthAuthenticatedButton:
+            Utilities.confirmLogout()
+            
+
 class ElistaAddOperation(QDialog):
     def __init__(self,session):
         super().__init__()
@@ -59,7 +152,7 @@ class ElistaEditOperation(QDialog):
 
 
 
-    #MAKE UPDATE
+
     def updateTask(self):
         updateName = self.reviseNameBox.text()
         updatePriority = self.revisePriorityBox.currentText()
@@ -345,17 +438,14 @@ class ElistaMainPage(QDialog):
 
 
         elif pressed == self.thirdAuthenticatedButton:
-            print("third") #CALENDAR HERE
-
-        elif pressed == self.fourthAuthenticatedButton:
-            #TO-DO LIST, MAKE A PROMPT THAT ASKS A YES OR NO QUESTION TO CONTINUE LOG OUT OR NOT
-
-            loginPage = Login()
-            widget.addWidget(loginPage)
-            widget.setFixedWidth(480)
-            widget.setFixedHeight(600)
+            calendar = ElistaCalendarOperation(self.session) 
+            widget.addWidget(calendar)
             widget.setCurrentIndex(widget.currentIndex() + 1) 
 
+
+        elif pressed == self.fourthAuthenticatedButton:
+            Utilities.confirmLogout()
+            
 
 
 
@@ -415,7 +505,9 @@ class Signup(QDialog):
         loadUi("create.ui",self)
         self.signupSubmitButton.clicked.connect(self.createAccount)
         self.signupReturnButton.clicked.connect(self.goBackToLogin)
-    
+        self.SignupPasswordForm.setEchoMode(QtWidgets.QLineEdit.Password)
+        self.SignupConfirmPasswordForm.setEchoMode(QtWidgets.QLineEdit.Password)
+
     def goBackToLogin(self):
         loginPage = Login()
         widget.addWidget(loginPage)
@@ -424,7 +516,7 @@ class Signup(QDialog):
 
     def createAccount(self):
         username = self.signupUsernameForm.text()
-
+        
         #MAKE USERNAMES EXTREMELY SHORT
 
         #ADD FORCED STRONG PASSWORD MECHHANISM
@@ -462,14 +554,40 @@ statusDict = {
 }
 
 class Database():
+    @staticmethod
+    def getSanitizedCalendarStatusData(session):
+        data = (session,)
+        query = """SELECT taskname,statusname,typename,taskid from tasks INNER JOIN taskstatus on tasks.statusid = taskstatus.statusid inner join tasktype on tasks.typeid = tasktype.typeid where userid = %s ORDER BY tasks.statusid"""
+        cursor.execute(query,data)
+        result = cursor.fetchall()
+        print(result)
+        return result
+
+    @staticmethod
+    def getSanitizedCalendarDeadlineData(session):
+        data = (session,)
+        query = """SELECT taskname,deadline,typename,taskid from tasks inner join tasktype on tasks.typeid = tasktype.typeid where userid = %s ORDER BY deadline ASC"""
+        cursor.execute(query,data)
+        result = cursor.fetchall()
+        print(result)
+        return result
+
+    @staticmethod
+    def getSanitizedCalendarPriorityData(session):
+        data = (session,)
+        query = """SELECT taskname,priorityname,typename,taskid FROM tasks INNER JOIN taskpriority ON tasks.priorityid = taskpriority.priorityid INNER JOIN tasktype on tasks.typeid = tasktype.typeid WHERE userid = %s ORDER BY tasks.priorityid ASC"""
+        cursor.execute(query,data)
+        result = cursor.fetchall()
+        print(result)
+        return result
+
+    @staticmethod
     def sanitizedDeleteTask(taskId):
         data = (taskId,)
         query = """DELETE FROM Tasks where taskid = %s"""
         cursor.execute(query,data)
         connection.commit()
         
-    
-
     @staticmethod
     def getSanitizedPriorityData(session,typeId):
         data = (session,typeId)
@@ -570,6 +688,24 @@ class Database():
         
         
 class Utilities:
+    def confirmLogout():
+        msg = QMessageBox()
+        msg.setIcon(QMessageBox.Question)
+        msg.setWindowTitle("Confirm Logout")
+        msg.setText("Are you sure you want to logout?")
+        msg.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
+        msg.setDefaultButton(QMessageBox.No)
+        response = msg.exec_()
+
+        if response == QMessageBox.Yes: #goback
+            loginPage = Login()
+            widget.addWidget(loginPage)
+            widget.setFixedWidth(480)
+            widget.setFixedHeight(600)
+            widget.setCurrentIndex(widget.currentIndex() + 1) 
+        else:
+            print("User canceled logout.")
+
     @staticmethod
     def successfulAction():
         msg = QMessageBox()

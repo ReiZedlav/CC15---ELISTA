@@ -271,7 +271,7 @@ QToolTip {
     <rect>
      <x>260</x>
      <y>210</y>
-     <width>101</width>
+     <width>81</width>
      <height>22</height>
     </rect>
    </property>
@@ -339,7 +339,7 @@ QToolTip {
     <rect>
      <x>660</x>
      <y>210</y>
-     <width>101</width>
+     <width>81</width>
      <height>22</height>
     </rect>
    </property>
@@ -359,7 +359,7 @@ QToolTip {
     <rect>
      <x>1070</x>
      <y>210</y>
-     <width>101</width>
+     <width>81</width>
      <height>22</height>
     </rect>
    </property>

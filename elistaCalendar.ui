@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1298</width>
+    <width>1400</width>
     <height>800</height>
    </rect>
   </property>
@@ -158,25 +158,79 @@
     <string>To-do lists, personified.</string>
    </property>
   </widget>
-  <widget class="QCalendarWidget" name="calendarWidget">
+  <widget class="QCalendarWidget" name="calendarData">
    <property name="geometry">
     <rect>
      <x>180</x>
      <y>150</y>
-     <width>821</width>
+     <width>811</width>
      <height>651</height>
     </rect>
    </property>
   </widget>
-  <widget class="QListWidget" name="listWidget">
+  <widget class="QLabel" name="label_4">
    <property name="geometry">
     <rect>
-     <x>1020</x>
-     <y>230</y>
-     <width>261</width>
-     <height>541</height>
+     <x>1000</x>
+     <y>150</y>
+     <width>321</width>
+     <height>71</height>
     </rect>
    </property>
+   <property name="styleSheet">
+    <string notr="true">font-size: 40px</string>
+   </property>
+   <property name="text">
+    <string>TO-DO LISTS</string>
+   </property>
+  </widget>
+  <widget class="QTableWidget" name="calendarTable">
+   <property name="geometry">
+    <rect>
+     <x>1005</x>
+     <y>251</y>
+     <width>381</width>
+     <height>531</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_5">
+   <property name="geometry">
+    <rect>
+     <x>1010</x>
+     <y>220</y>
+     <width>55</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Sort by:</string>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="calendarBox">
+   <property name="geometry">
+    <rect>
+     <x>1070</x>
+     <y>220</y>
+     <width>101</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <item>
+    <property name="text">
+     <string>Priority</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Deadline</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Status</string>
+    </property>
+   </item>
   </widget>
  </widget>
  <resources/>
