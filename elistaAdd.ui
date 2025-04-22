@@ -13,27 +13,27 @@
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
-  <widget class="QLabel" name="label_4">
+  <widget class="QLabel" name="addToLabel">
    <property name="geometry">
     <rect>
-     <x>110</x>
-     <y>40</y>
-     <width>271</width>
+     <x>80</x>
+     <y>100</y>
+     <width>381</width>
      <height>101</height>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">font-size: 50px;</string>
+    <string notr="true">font-size: 30px;</string>
    </property>
    <property name="text">
-    <string>Task Adder</string>
+    <string>ADD TO [TABLE]</string>
    </property>
   </widget>
   <widget class="QTextEdit" name="taskNameField">
    <property name="geometry">
     <rect>
-     <x>70</x>
-     <y>210</y>
+     <x>80</x>
+     <y>270</y>
      <width>301</width>
      <height>61</height>
     </rect>
@@ -45,8 +45,8 @@
   <widget class="QLabel" name="label_5">
    <property name="geometry">
     <rect>
-     <x>70</x>
-     <y>130</y>
+     <x>80</x>
+     <y>180</y>
      <width>201</width>
      <height>81</height>
     </rect>
@@ -59,53 +59,11 @@
     <string>Task name:</string>
    </property>
   </widget>
-  <widget class="QLabel" name="label_6">
-   <property name="geometry">
-    <rect>
-     <x>60</x>
-     <y>310</y>
-     <width>71</width>
-     <height>51</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">font-size: 20px;
-</string>
-   </property>
-   <property name="text">
-    <string>Type:</string>
-   </property>
-  </widget>
-  <widget class="QComboBox" name="addTaskTypeBox">
-   <property name="geometry">
-    <rect>
-     <x>140</x>
-     <y>330</y>
-     <width>101</width>
-     <height>22</height>
-    </rect>
-   </property>
-   <item>
-    <property name="text">
-     <string>Personal</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>Academic</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>Miscellaneous</string>
-    </property>
-   </item>
-  </widget>
   <widget class="QLabel" name="label_7">
    <property name="geometry">
     <rect>
-     <x>60</x>
-     <y>350</y>
+     <x>80</x>
+     <y>330</y>
      <width>71</width>
      <height>51</height>
     </rect>
@@ -121,8 +79,8 @@
   <widget class="QComboBox" name="addTaskPriorityBox">
    <property name="geometry">
     <rect>
-     <x>140</x>
-     <y>370</y>
+     <x>170</x>
+     <y>350</y>
      <width>101</width>
      <height>22</height>
     </rect>
@@ -156,8 +114,8 @@
   <widget class="QDateEdit" name="addTaskDeadlineBox">
    <property name="geometry">
     <rect>
-     <x>280</x>
-     <y>370</y>
+     <x>170</x>
+     <y>400</y>
      <width>110</width>
      <height>22</height>
     </rect>
@@ -176,8 +134,8 @@
   <widget class="QLabel" name="label_8">
    <property name="geometry">
     <rect>
-     <x>280</x>
-     <y>320</y>
+     <x>80</x>
+     <y>380</y>
      <width>121</width>
      <height>51</height>
     </rect>
@@ -206,8 +164,8 @@
   <widget class="QLabel" name="label_9">
    <property name="geometry">
     <rect>
-     <x>280</x>
-     <y>300</y>
+     <x>180</x>
+     <y>380</y>
      <width>121</width>
      <height>20</height>
     </rect>

@@ -30,19 +30,6 @@
     <string>Username</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="secondAuthenticatedButton">
-   <property name="geometry">
-    <rect>
-     <x>40</x>
-     <y>310</y>
-     <width>111</width>
-     <height>41</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>List Management</string>
-   </property>
-  </widget>
   <widget class="QPushButton" name="firstAuthenticatedButton">
    <property name="geometry">
     <rect>
@@ -60,7 +47,7 @@
    <property name="geometry">
     <rect>
      <x>40</x>
-     <y>380</y>
+     <y>310</y>
      <width>111</width>
      <height>41</height>
     </rect>
@@ -73,7 +60,7 @@
    <property name="geometry">
     <rect>
      <x>40</x>
-     <y>450</y>
+     <y>380</y>
      <width>111</width>
      <height>41</height>
     </rect>
@@ -373,6 +360,45 @@ QToolTip {
      <string>Deadline</string>
     </property>
    </item>
+  </widget>
+  <widget class="QPushButton" name="personalizeAuthenticatedButton">
+   <property name="geometry">
+    <rect>
+     <x>350</x>
+     <y>190</y>
+     <width>111</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Personalize</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="AssignAuthenticatedButton">
+   <property name="geometry">
+    <rect>
+     <x>750</x>
+     <y>190</y>
+     <width>111</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Assign</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="MiscAuthenticatedButton">
+   <property name="geometry">
+    <rect>
+     <x>1160</x>
+     <y>190</y>
+     <width>111</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Plan</string>
+   </property>
   </widget>
  </widget>
  <resources/>

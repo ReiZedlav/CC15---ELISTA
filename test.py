@@ -1,4 +1,4 @@
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QDate
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QApplication,QWidget,QLabel,QPushButton,QVBoxLayout,QHBoxLayout,QLineEdit,QGridLayout,QMainWindow,QMessageBox,QTextEdit, QDialog,QTableWidget, QHeaderView
 from PyQt5.QtGui import QFont, QGuiApplication
@@ -13,6 +13,8 @@ connection = mysql.connector.connect(host="localhost",database="cc15",user="root
 cursor = connection.cursor(prepared=True)
 
 class ElistaCalendarOperation(QDialog):
+    #FEATURE TO DO LIST SHOULD BE BY MONTH
+    
     def __init__(self,session):
         super().__init__()
         self.session = session
@@ -20,13 +22,72 @@ class ElistaCalendarOperation(QDialog):
         self.authenticatedNameLabel.setText(Database.getUsername(session))
         #create updating buttons
         self.firstAuthenticatedButton.clicked.connect(self.dynamicButton)
-        self.secondAuthenticatedButton.clicked.connect(self.dynamicButton)
+        #self.secondAuthenticatedButton.clicked.connect(self.dynamicButton) DECOMISSIONED
         self.thirdAuthenticatedButton.clicked.connect(self.dynamicButton)
         self.fourthAuthenticatedButton.clicked.connect(self.dynamicButton)
 
         self.calendarBox.currentTextChanged.connect(self.calendarDynamicComboBox) 
         self.calendarDynamicComboBox(self.calendarBox.currentText()) 
+
+        self.calendarData.clicked.connect(self.calendarPressEvent)
+
+        self.calendarTable.cellDoubleClicked.connect(self.rowClickEvent)
+        self.calendarTable.verticalHeader().setVisible(False)
+        self.calendarTable.setSelectionBehavior(QTableWidget.SelectRows)
+        self.calendarTable.setSelectionMode(QTableWidget.SingleSelection)
+
+        
+
+    def rowClickEvent(self, row, column):
+        row_data = []
+        for col in range(self.calendarTable.columnCount()):
+            item = self.calendarTable.item(row, col)
+            row_data.append(item.text() if item else "")
+            
+        edit = ElistaEditOperation(self.session,row_data[-1]) 
+        widget.setFixedWidth(480)
+        widget.setFixedHeight(600)
+        widget.addWidget(edit)
+        widget.setCurrentIndex(widget.currentIndex() + 1) 
+
+        print("Row clicked:", row_data)
     
+    #DESIGN THIS FUNCTIONALITY
+    def calendarPressEvent(self, date: QDate):
+        year = date.year()
+        month = date.month()
+        day = date.day()
+
+        calendarData = Database.getSanitizedCalendarDayData(year,month,day,self.session)
+        self.calendarTable.setRowCount(len(calendarData))
+        self.calendarTable.setColumnCount(5)
+
+        self.calendarTable.setHorizontalHeaderLabels(["Task","Priority","Status","Type","TaskID"])
+        self.calendarTable.setColumnHidden(3, False)
+        self.calendarTable.setColumnHidden(4, True)
+
+        self.calendarTable.clearContents()
+
+        tableRow = 0
+        for i in calendarData:
+            print(i)
+            self.calendarTable.setItem(tableRow,0,QtWidgets.QTableWidgetItem(str(i[0])))
+            self.calendarTable.setItem(tableRow,1,QtWidgets.QTableWidgetItem(str(i[1])))
+            self.calendarTable.setItem(tableRow,2,QtWidgets.QTableWidgetItem(str(i[2])))
+            self.calendarTable.setItem(tableRow,3,QtWidgets.QTableWidgetItem(str(i[3])))
+            self.calendarTable.setItem(tableRow,4,QtWidgets.QTableWidgetItem(str(i[4])))
+
+            tableRow += 1
+
+
+       #IMPORTANT EVENT 
+        print(f"Clicked date: {year}-{month:02d}-{day:02d}")
+
+        
+        #calendarData = Database.getSanitizedDayData(year,month,day,self.session)
+
+        #print(calendarData)
+
     def editTable(self,typeTable):
         tableRow = 0
         for i in typeTable:
@@ -37,24 +98,34 @@ class ElistaCalendarOperation(QDialog):
             self.calendarTable.setItem(tableRow,3,QtWidgets.QTableWidgetItem(str(i[3])))
             tableRow += 1
             
+
+    #SORT BY MONTH FEATURE. 
     def calendarDynamicComboBox(self,sortBy):
+
+
         if sortBy == "Priority":
             self.calendarTable.resizeRowsToContents()
             self.calendarTable.setColumnCount(4)
             self.calendarTable.setHorizontalHeaderLabels(["Task","Priority","Type","TaskID"])
 
-            priorityData = Database.getSanitizedCalendarPriorityData(self.session) 
 
+            priorityData = Database.getSanitizedCalendarPriorityData(self.session)
+            print(self.calendarData.selectedDate().year()) 
+            self.calendarData.selectedDate().month()
             self.calendarTable.setRowCount(len(priorityData))
+            
 
             self.editTable(priorityData)
 
         if sortBy == "Deadline":
             self.calendarTable.resizeRowsToContents()
             self.calendarTable.setColumnCount(4)
+
             self.calendarTable.setHorizontalHeaderLabels(["Task","Deadline","Type","TaskID"])
 
             deadlineData = Database.getSanitizedCalendarDeadlineData(self.session)
+            self.calendarTable.setRowCount(len(deadlineData))
+
 
             tableRow = 0
 
@@ -64,9 +135,12 @@ class ElistaCalendarOperation(QDialog):
         if sortBy == "Status":
             self.calendarTable.resizeRowsToContents()
             self.calendarTable.setColumnCount(4)
+
             self.calendarTable.setHorizontalHeaderLabels(["Task","Status","Type","TaskID"])
-        
+
             statusData = Database.getSanitizedCalendarStatusData(self.session)
+            self.calendarTable.setRowCount(len(statusData))
+
 
             self.editTable(statusData)
 
@@ -82,18 +156,6 @@ class ElistaCalendarOperation(QDialog):
             widget.setFixedWidth(1400)
             widget.setFixedHeight(800)
             
-
-
-        elif pressed == self.secondAuthenticatedButton: #GOBACK HERE
-
-            #make a CREATE READ UPDATE CLASS. MAKE THIS ONE FIRST
-            crud = ElistaAddOperation(self.session)
-            widget.setFixedWidth(480)
-            widget.setFixedHeight(600)
-            widget.addWidget(crud)
-            widget.setCurrentIndex(widget.currentIndex() + 1) 
-
-
         elif pressed == self.thirdAuthenticatedButton:
             calendar = ElistaCalendarOperation(self.session) 
             widget.addWidget(calendar)
@@ -105,14 +167,21 @@ class ElistaCalendarOperation(QDialog):
             
 
 class ElistaAddOperation(QDialog):
-    def __init__(self,session):
+    def __init__(self,session,typeName):
         super().__init__()
         self.session = session
+        self.typeName = typeName
         loadUi("elistaAdd.ui",self)
 
         #task adder functionality here
         self.addTaskSubmitBox.clicked.connect(self.addTask)
         self.taskAdderReturn.clicked.connect(self.returnToMainPage)
+
+        self.addToLabel.setText("ADDING TO " + str(self.typeName).upper())
+
+        meanings = {
+
+        }
 
     def returnToMainPage(self):
         loggedIn = ElistaMainPage(self.session)
@@ -122,9 +191,10 @@ class ElistaAddOperation(QDialog):
         widget.setFixedHeight(800)
 
     def addTask(self):
+        print(self.typeName)
         taskOwner = self.session
         taskPriority = self.addTaskPriorityBox.currentText()
-        taskType = self.addTaskTypeBox.currentText()
+        taskType = self.typeName
         taskStatus = "Pending"
         taskName = self.taskNameField.toPlainText()
         taskDeadline = self.addTaskDeadlineBox.date().toString("yyyy-MM-dd")
@@ -197,7 +267,19 @@ class ElistaMainPage(QDialog):
         self.authenticatedNameLabel.setText(Database.getUsername(session))
         #create updating buttons
         self.firstAuthenticatedButton.clicked.connect(self.dynamicButton)
-        self.secondAuthenticatedButton.clicked.connect(self.dynamicButton)
+        
+
+
+        #---------------------------------------------------------------------
+
+        self.personalizeAuthenticatedButton.clicked.connect(self.dynamicAdderButton) #TEMPORARY MAINTENANCE
+        self.AssignAuthenticatedButton.clicked.connect(self.dynamicAdderButton)
+        self.MiscAuthenticatedButton.clicked.connect(self.dynamicAdderButton)
+
+
+        #-------------------------------------------------------------
+
+
         self.thirdAuthenticatedButton.clicked.connect(self.dynamicButton)
         self.fourthAuthenticatedButton.clicked.connect(self.dynamicButton)
 
@@ -232,6 +314,32 @@ class ElistaMainPage(QDialog):
         self.personalTable.cellDoubleClicked.connect(self.rowClickEventOne)
         self.academicTable.cellDoubleClicked.connect(self.rowClickEventTwo)
         self.miscTable.cellDoubleClicked.connect(self.rowClickEventThree)
+    
+    def addMenu(self,location):
+        crud = ElistaAddOperation(self.session,location)
+        widget.setFixedWidth(480)
+        widget.setFixedHeight(600)
+        widget.addWidget(crud)
+        widget.setCurrentIndex(widget.currentIndex() + 1) 
+    
+    def dynamicAdderButton(self):
+        #sanitizedInsertTask(taskOwner,taskPriority,taskType,taskStatus,taskName,taskDeadline):
+        #data = (taskOwner,priorityDict[taskPriority],typeDict[taskType],statusDict[taskStatus],taskName,taskDeadline,)
+
+        sender = self.sender()
+        pressed = sender.text()
+
+        if pressed == "Personalize":
+            print("it works!")
+            self.addMenu("Personal")
+        
+        if pressed == "Assign":
+            print("Assign works!")
+            self.addMenu("Assign")
+
+        if pressed == "Plan":
+            print("Plan works!")
+            self.addMenu("Plan")
 
     def rowClickEventOne(self, row, column):
         row_data = []
@@ -426,15 +534,15 @@ class ElistaMainPage(QDialog):
             widget.setFixedHeight(800)
             
 
-
-        elif pressed == self.secondAuthenticatedButton: #GOBACK HERE
+        #DECOMISSIONED!!!!!!!
+        #elif pressed == self.secondAuthenticatedButton: 
 
             #make a CREATE READ UPDATE CLASS. MAKE THIS ONE FIRST
-            crud = ElistaAddOperation(self.session)
-            widget.setFixedWidth(480)
-            widget.setFixedHeight(600)
-            widget.addWidget(crud)
-            widget.setCurrentIndex(widget.currentIndex() + 1) 
+            #crud = ElistaAddOperation(self.session)
+            #widget.setFixedWidth(480)
+            #widget.setFixedHeight(600)
+            #widget.addWidget(crud)
+            #widget.setCurrentIndex(widget.currentIndex() + 1) 
 
 
         elif pressed == self.thirdAuthenticatedButton:
@@ -534,7 +642,11 @@ class Signup(QDialog):
 
 typeDict = {
     "Personal": 1,
+
+    "Assign": 2, 
     "Academic": 2,
+
+    "Plan": 3,
     "Miscellaneous": 3
 }
 
@@ -554,7 +666,25 @@ statusDict = {
 }
 
 class Database():
+    #(year,month,day,self.session)
     @staticmethod
+    def getSanitizedCalendarDayData(year,month,day,session):
+        data = (year,month,day,session)
+        query = """SELECT taskname,priorityname,statusname,typename,tasks.taskid FROM tasks INNER JOIN taskpriority ON tasks.priorityid = taskpriority.priorityid INNER JOIN taskstatus on tasks.statusid = taskstatus.statusid INNER JOIN tasktype ON tasks.typeid = tasktype.typeid WHERE YEAR(deadline) = %s AND MONTH(deadline) = %s AND DAY(deadline) = %s AND userid = %s"""
+        cursor.execute(query,data)
+        result = cursor.fetchall()
+
+        return result
+
+    
+
+
+    
+
+
+
+
+    @staticmethod #ADD YEAR AND MONTH FEATURE
     def getSanitizedCalendarStatusData(session):
         data = (session,)
         query = """SELECT taskname,statusname,typename,taskid from tasks INNER JOIN taskstatus on tasks.statusid = taskstatus.statusid inner join tasktype on tasks.typeid = tasktype.typeid where userid = %s ORDER BY tasks.statusid"""
