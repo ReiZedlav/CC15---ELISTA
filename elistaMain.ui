@@ -272,6 +272,11 @@ QToolTip {
      <string>Deadline</string>
     </property>
    </item>
+   <item>
+    <property name="text">
+     <string>Status</string>
+    </property>
+   </item>
   </widget>
   <widget class="QLabel" name="label_7">
    <property name="geometry">
@@ -340,6 +345,11 @@ QToolTip {
      <string>Deadline</string>
     </property>
    </item>
+   <item>
+    <property name="text">
+     <string>Status</string>
+    </property>
+   </item>
   </widget>
   <widget class="QComboBox" name="miscBox">
    <property name="geometry">
@@ -358,6 +368,11 @@ QToolTip {
    <item>
     <property name="text">
      <string>Deadline</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Status</string>
     </property>
    </item>
   </widget>

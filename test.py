@@ -458,6 +458,26 @@ class ElistaMainPage(QDialog):
                 self.personalTable.setItem(tableRow,3,QtWidgets.QTableWidgetItem(str(j[3])))
                 tableRow += 1
         
+        if sortBy == "Status":
+            self.personalTable.resizeRowsToContents()
+            self.personalTable.setColumnCount(4)
+
+            self.personalTable.setHorizontalHeaderLabels(["Task","Status","Deadline","Task ID"])
+
+            statusData = Database.getSanitizedStatusData(self.session,1)
+            self.personalTable.setRowCount(len(statusData))
+
+            tableRow = 0
+
+            for j in statusData:
+                print(j)
+                self.personalTable.setItem(tableRow,0,QtWidgets.QTableWidgetItem(str(j[0])))
+                self.personalTable.setItem(tableRow,1,QtWidgets.QTableWidgetItem(str(j[1])))
+                self.personalTable.setItem(tableRow,2,QtWidgets.QTableWidgetItem(str(j[2])))
+                self.personalTable.setItem(tableRow,3,QtWidgets.QTableWidgetItem(str(j[3])))
+                tableRow += 1
+
+        
     def academicDynamicComboBoxes(self,sortBy):
         if sortBy == "Priority":
             self.academicTable.resizeRowsToContents()
@@ -491,6 +511,25 @@ class ElistaMainPage(QDialog):
             tableRow = 0
 
             for j in deadlineData:
+                print(j)
+                self.academicTable.setItem(tableRow,0,QtWidgets.QTableWidgetItem(str(j[0])))
+                self.academicTable.setItem(tableRow,1,QtWidgets.QTableWidgetItem(str(j[1])))
+                self.academicTable.setItem(tableRow,2,QtWidgets.QTableWidgetItem(str(j[2])))
+                self.academicTable.setItem(tableRow,3,QtWidgets.QTableWidgetItem(str(j[3])))
+                tableRow += 1
+        
+        if sortBy == "Status":
+            self.academicTable.resizeRowsToContents()
+            self.academicTable.setColumnCount(4)
+
+            self.academicTable.setHorizontalHeaderLabels(["Task","Status","Deadline","Task ID"])
+
+            statusData = Database.getSanitizedStatusData(self.session,2)
+            self.academicTable.setRowCount(len(statusData))
+
+            tableRow = 0
+
+            for j in statusData:
                 print(j)
                 self.academicTable.setItem(tableRow,0,QtWidgets.QTableWidgetItem(str(j[0])))
                 self.academicTable.setItem(tableRow,1,QtWidgets.QTableWidgetItem(str(j[1])))
@@ -531,6 +570,25 @@ class ElistaMainPage(QDialog):
             tableRow = 0
 
             for j in deadlineData:
+                print(j)
+                self.miscTable.setItem(tableRow,0,QtWidgets.QTableWidgetItem(str(j[0])))
+                self.miscTable.setItem(tableRow,1,QtWidgets.QTableWidgetItem(str(j[1])))
+                self.miscTable.setItem(tableRow,2,QtWidgets.QTableWidgetItem(str(j[2])))
+                self.miscTable.setItem(tableRow,3,QtWidgets.QTableWidgetItem(str(j[3])))
+                tableRow += 1
+        
+        if sortBy == "Status":
+            self.miscTable.resizeRowsToContents()
+            self.miscTable.setColumnCount(4)
+
+            self.miscTable.setHorizontalHeaderLabels(["Task","Status","Deadline","Task ID"])
+
+            statusData = Database.getSanitizedStatusData(self.session,2)
+            self.miscTable.setRowCount(len(statusData))
+
+            tableRow = 0
+
+            for j in statusData:
                 print(j)
                 self.miscTable.setItem(tableRow,0,QtWidgets.QTableWidgetItem(str(j[0])))
                 self.miscTable.setItem(tableRow,1,QtWidgets.QTableWidgetItem(str(j[1])))
@@ -799,7 +857,16 @@ class Database():
     @staticmethod
     def getSanitizedDeadlineData(session,typeId):
         data = (session,typeId)
-        query = """SELECT TaskName,deadline,statusname,taskid FROM Tasks LEFT JOIN TaskStatus ON Tasks.statusId = TaskStatus.statusId WHERE userId = %s AND typeId = %s ORDER BY deadline ASC,taskstatus.statusid DESC"""
+        query = """SELECT TaskName,deadline,statusname,taskid FROM Tasks INNER JOIN TaskStatus ON Tasks.statusId = TaskStatus.statusId WHERE userId = %s AND typeId = %s ORDER BY deadline ASC,taskstatus.statusid DESC"""
+        cursor.execute(query,data)
+        result = cursor.fetchall()
+        print(result)
+        return result
+
+    @staticmethod
+    def getSanitizedStatusData(session,typeId):
+        data = (session,typeId)
+        query = """SELECT taskname,statusname,deadline,taskid FROM tasks INNER JOIN taskstatus on tasks.statusid = taskstatus.statusid WHERE userid = %s AND typeid = %s ORDER BY taskstatus.statusid ASC"""
         cursor.execute(query,data)
         result = cursor.fetchall()
         print(result)
