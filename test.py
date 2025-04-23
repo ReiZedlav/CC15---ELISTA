@@ -5,6 +5,7 @@ from PyQt5.QtGui import QFont, QGuiApplication
 from PyQt5.uic import loadUi
 import mysql.connector
 import bcrypt
+import datetime
 
 #CHANGE THE LOCATION OF ADDING TO THE TOP OF type
 
@@ -35,8 +36,6 @@ class ElistaCalendarOperation(QDialog):
         self.calendarTable.verticalHeader().setVisible(False)
         self.calendarTable.setSelectionBehavior(QTableWidget.SelectRows)
         self.calendarTable.setSelectionMode(QTableWidget.SingleSelection)
-
-        
 
     def rowClickEvent(self, row, column):
         row_data = []
@@ -177,7 +176,13 @@ class ElistaAddOperation(QDialog):
         self.addTaskSubmitBox.clicked.connect(self.addTask)
         self.taskAdderReturn.clicked.connect(self.returnToMainPage)
 
-        self.addToLabel.setText("ADDING TO " + str(self.typeName).upper())
+        self.addTaskDeadlineBox.setDate(QDate.currentDate())
+
+
+        #STRUCTURAL CODE. dont remove.
+        aliases = {"Personal": "Personal","Assign": "Academics","Plan": "Miscs..."}
+
+        self.addToLabel.setText("ADDING TO " + str(aliases[self.typeName]).upper())
 
         meanings = {
 
@@ -219,6 +224,7 @@ class ElistaEditOperation(QDialog):
         self.reviseDiscardButton.clicked.connect(self.removeTask)
 
         self.reviseUpdateButton.clicked.connect(self.updateTask)
+        self.reviseDeadlineBox.setDate(QDate.currentDate())
 
 
 
@@ -584,6 +590,10 @@ class Login(QDialog):
         self.LoginSubmitButton.clicked.connect(self.authenticate)
         self.LoginPasswordForm.setEchoMode(QtWidgets.QLineEdit.Password)
         self.createAccountButton.clicked.connect(self.visitSignupPage)
+
+        #SET FAILS 
+        Database.sanitizedEnforceDeadlines(str(datetime.datetime.today()).split()[0])
+
     
     def visitSignupPage(self):
         visitPage = Signup()
@@ -666,6 +676,14 @@ statusDict = {
 }
 
 class Database():
+    @staticmethod
+    def sanitizedEnforceDeadlines(today):
+        data = (today,)
+        query = """UPDATE Tasks SET statusid = 5 WHERE deadline < %s AND statusid != 5"""
+        cursor.execute(query,data)
+        connection.commit()
+
+
     #(year,month,day,self.session)
     @staticmethod
     def getSanitizedCalendarDayData(year,month,day,session):

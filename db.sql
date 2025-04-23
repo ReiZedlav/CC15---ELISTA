@@ -29,7 +29,8 @@ INSERT INTO TaskStatus VALUES
     (1,"Completed"),
     (2,"Concluding"),
     (3,"In progress"),
-    (4,"Pending");
+    (4,"Pending"),
+    (5,"Failed"); /*REMOVE IF THIS FAILS - ADDED 22/04/2025*/
 
 INSERT INTO TaskType VALUES 
     (1,"Personal"),
