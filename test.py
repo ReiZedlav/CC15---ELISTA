@@ -42,8 +42,8 @@ class ElistaCalendarOperation(QDialog):
         for col in range(self.calendarTable.columnCount()):
             item = self.calendarTable.item(row, col)
             row_data.append(item.text() if item else "")
-            
-        edit = ElistaEditOperation(self.session,row_data[-1]) 
+        
+        edit = ElistaEditOperation(self.session,row_data[-1],row_data[2]) 
         widget.setFixedWidth(480)
         widget.setFixedHeight(600)
         widget.addWidget(edit)
@@ -211,11 +211,15 @@ class ElistaAddOperation(QDialog):
         Utilities.successfulAction()
 
 class ElistaEditOperation(QDialog):
-    def __init__(self,session,taskId):
+    def __init__(self,session,taskId,typeName):
         super().__init__()
         self.session = session
         self.taskId = taskId
+        self.typeName = typeName
+
+
         loadUi("elistaUpdate.ui",self)
+        self.reviseTypeBox.setCurrentText(self.typeName)
 
         self.reviseTaskId.setText(str(taskId))
         self.reviseNameBox.setText(Database.getSanitizedTaskName(self.taskId))
@@ -357,7 +361,7 @@ class ElistaMainPage(QDialog):
 
         #(self,session,taskId)
         
-        edit = ElistaEditOperation(self.session,row_data[3]) 
+        edit = ElistaEditOperation(self.session,row_data[3],"Personal") 
         widget.setFixedWidth(480)
         widget.setFixedHeight(600)
         widget.addWidget(edit)
@@ -371,7 +375,7 @@ class ElistaMainPage(QDialog):
             item = self.academicTable.item(row, col)
             row_data.append(item.text() if item else "")
         
-        edit = ElistaEditOperation(self.session,row_data[3]) 
+        edit = ElistaEditOperation(self.session,row_data[3],"Academic") 
         widget.setFixedWidth(480)
         widget.setFixedHeight(600)
         widget.addWidget(edit)
@@ -385,7 +389,7 @@ class ElistaMainPage(QDialog):
             item = self.miscTable.item(row, col)
             row_data.append(item.text() if item else "")
         
-        edit = ElistaEditOperation(self.session,row_data[3]) 
+        edit = ElistaEditOperation(self.session,row_data[3],"Miscellaneous") 
         widget.setFixedWidth(480)
         widget.setFixedHeight(600)
         widget.addWidget(edit)
