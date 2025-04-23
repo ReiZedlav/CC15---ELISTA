@@ -43,7 +43,9 @@ class ElistaCalendarOperation(QDialog):
             item = self.calendarTable.item(row, col)
             row_data.append(item.text() if item else "")
         
-        edit = ElistaEditOperation(self.session,row_data[-1],row_data[2]) 
+        #GO BACK HERE
+        edit = ElistaEditOperation(self.session,row_data[-1],row_data[2],Database.sanitizedGetPriorityName(row_data[-1]),Database.sanitizedGetStatusName(row_data[-1]))
+
         widget.setFixedWidth(480)
         widget.setFixedHeight(600)
         widget.addWidget(edit)
@@ -211,17 +213,20 @@ class ElistaAddOperation(QDialog):
         Utilities.successfulAction()
 
 class ElistaEditOperation(QDialog):
-    def __init__(self,session,taskId,typeName):
+    def __init__(self,session,taskId,typeName,priority,status):
         super().__init__()
         self.session = session
         self.taskId = taskId
         self.typeName = typeName
-
+        self.priority = priority
+        self.status = status
 
         loadUi("elistaUpdate.ui",self)
         self.reviseTypeBox.setCurrentText(self.typeName)
+        self.revisePriorityBox.setCurrentText(self.priority)
+        self.reviseStatusBox.setCurrentText(self.status)
 
-        self.reviseTaskId.setText(str(taskId))
+        self.reviseTaskId.setText(str(taskId))  
         self.reviseNameBox.setText(Database.getSanitizedTaskName(self.taskId))
         
         self.reviseCancelButton.clicked.connect(self.returnToMainPage)
@@ -361,7 +366,7 @@ class ElistaMainPage(QDialog):
 
         #(self,session,taskId)
         
-        edit = ElistaEditOperation(self.session,row_data[3],"Personal") 
+        edit = ElistaEditOperation(self.session,row_data[3],"Personal",row_data[1],row_data[2]) 
         widget.setFixedWidth(480)
         widget.setFixedHeight(600)
         widget.addWidget(edit)
@@ -375,7 +380,7 @@ class ElistaMainPage(QDialog):
             item = self.academicTable.item(row, col)
             row_data.append(item.text() if item else "")
         
-        edit = ElistaEditOperation(self.session,row_data[3],"Academic") 
+        edit = ElistaEditOperation(self.session,row_data[3],"Academic",row_data[1],row_data[2]) 
         widget.setFixedWidth(480)
         widget.setFixedHeight(600)
         widget.addWidget(edit)
@@ -389,7 +394,7 @@ class ElistaMainPage(QDialog):
             item = self.miscTable.item(row, col)
             row_data.append(item.text() if item else "")
         
-        edit = ElistaEditOperation(self.session,row_data[3],"Miscellaneous") 
+        edit = ElistaEditOperation(self.session,row_data[3],"Miscellaneous",row_data[1],row_data[2]) 
         widget.setFixedWidth(480)
         widget.setFixedHeight(600)
         widget.addWidget(edit)
@@ -680,6 +685,24 @@ statusDict = {
 }
 
 class Database():
+    @staticmethod
+    def sanitizedGetStatusName(taskid):
+        data = (taskid,)
+        query = """SELECT statusname from tasks INNER JOIN taskstatus ON tasks.statusid = taskstatus.statusid WHERE taskid = %s"""
+        cursor.execute(query,data)
+        result = cursor.fetchall()
+        
+        return result[0][0]
+
+    @staticmethod
+    def sanitizedGetPriorityName(taskid):
+        data = (taskid,)
+        query = """SELECT priorityname FROM tasks INNER JOIN taskpriority ON tasks.priorityid = taskpriority.priorityid WHERE taskid = %s"""
+        cursor.execute(query,data)
+        result = cursor.fetchall()
+        
+        return result[0][0]
+
     @staticmethod
     def sanitizedEnforceDeadlines(today):
         data = (today,)
