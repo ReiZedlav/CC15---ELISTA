@@ -44,7 +44,7 @@ class ElistaCalendarOperation(QDialog):
             row_data.append(item.text() if item else "")
         
         #GO BACK HERE
-        edit = ElistaEditOperation(self.session,row_data[-1],row_data[2],Database.sanitizedGetPriorityName(row_data[-1]),Database.sanitizedGetStatusName(row_data[-1]))
+        edit = ElistaEditOperation(self.session,row_data[-1],row_data[2],Database.sanitizedGetPriorityName(row_data[-1]),Database.sanitizedGetStatusName(row_data[-1]),False)
 
         widget.setFixedWidth(480)
         widget.setFixedHeight(600)
@@ -103,7 +103,7 @@ class ElistaCalendarOperation(QDialog):
     #SORT BY MONTH FEATURE. 
     def calendarDynamicComboBox(self,sortBy):
 
-
+        #8756523
         if sortBy == "Priority":
             self.calendarTable.resizeRowsToContents()
             self.calendarTable.setColumnCount(4)
@@ -213,13 +213,14 @@ class ElistaAddOperation(QDialog):
         Utilities.successfulAction()
 
 class ElistaEditOperation(QDialog):
-    def __init__(self,session,taskId,typeName,priority,status):
+    def __init__(self,session,taskId,typeName,priority,status,isFromMain):
         super().__init__()
         self.session = session
         self.taskId = taskId
         self.typeName = typeName
         self.priority = priority
         self.status = status
+        self.isFromMain = isFromMain
 
         loadUi("elistaUpdate.ui",self)
         self.reviseTypeBox.setCurrentText(self.typeName)
@@ -249,20 +250,34 @@ class ElistaEditOperation(QDialog):
 
         Utilities.successfulAction()
 
-        loggedIn = ElistaMainPage(self.session)
-        widget.addWidget(loggedIn)
-        widget.setCurrentIndex(widget.currentIndex() + 1)
-        widget.setFixedWidth(1400)
-        widget.setFixedHeight(800)
+        if self.isFromMain:
+            loggedIn = ElistaMainPage(self.session)
+            widget.addWidget(loggedIn)
+            widget.setCurrentIndex(widget.currentIndex() + 1)
+            widget.setFixedWidth(1400)
+            widget.setFixedHeight(800)
+        else:
+            calendar = ElistaCalendarOperation(self.session) 
+            widget.addWidget(calendar)
+            widget.setCurrentIndex(widget.currentIndex() + 1)
+            widget.setFixedWidth(1400)
+            widget.setFixedHeight(800)
 
 
 
     def returnToMainPage(self):
-        loggedIn = ElistaMainPage(self.session)
-        widget.addWidget(loggedIn)
-        widget.setCurrentIndex(widget.currentIndex() + 1)
-        widget.setFixedWidth(1400)
-        widget.setFixedHeight(800)
+        if self.isFromMain:
+            loggedIn = ElistaMainPage(self.session)
+            widget.addWidget(loggedIn)
+            widget.setCurrentIndex(widget.currentIndex() + 1)
+            widget.setFixedWidth(1400)
+            widget.setFixedHeight(800)
+        else:
+            calendar = ElistaCalendarOperation(self.session) 
+            widget.addWidget(calendar)
+            widget.setCurrentIndex(widget.currentIndex() + 1)
+            widget.setFixedWidth(1400)
+            widget.setFixedHeight(800)
 
     def removeTask(self):
         Database.sanitizedDeleteTask(self.taskId)
@@ -366,7 +381,7 @@ class ElistaMainPage(QDialog):
 
         #(self,session,taskId)
         
-        edit = ElistaEditOperation(self.session,row_data[3],"Personal",row_data[1],row_data[2]) 
+        edit = ElistaEditOperation(self.session,row_data[3],"Personal",row_data[1],row_data[2],True) 
         widget.setFixedWidth(480)
         widget.setFixedHeight(600)
         widget.addWidget(edit)
@@ -380,7 +395,7 @@ class ElistaMainPage(QDialog):
             item = self.academicTable.item(row, col)
             row_data.append(item.text() if item else "")
         
-        edit = ElistaEditOperation(self.session,row_data[3],"Academic",row_data[1],row_data[2]) 
+        edit = ElistaEditOperation(self.session,row_data[3],"Academic",row_data[1],row_data[2],True) 
         widget.setFixedWidth(480)
         widget.setFixedHeight(600)
         widget.addWidget(edit)
@@ -394,7 +409,7 @@ class ElistaMainPage(QDialog):
             item = self.miscTable.item(row, col)
             row_data.append(item.text() if item else "")
         
-        edit = ElistaEditOperation(self.session,row_data[3],"Miscellaneous",row_data[1],row_data[2]) 
+        edit = ElistaEditOperation(self.session,row_data[3],"Miscellaneous",row_data[1],row_data[2],True) 
         widget.setFixedWidth(480)
         widget.setFixedHeight(600)
         widget.addWidget(edit)
@@ -603,6 +618,9 @@ class Login(QDialog):
         #SET FAILS 
         Database.sanitizedEnforceDeadlines(str(datetime.datetime.today()).split()[0])
 
+        #CLEAR COMPLETED TASKS UPON LOGGING OUT
+        Database.sanitizedClearCompletedTasks()
+
     
     def visitSignupPage(self):
         visitPage = Signup()
@@ -685,6 +703,12 @@ statusDict = {
 }
 
 class Database():
+    @staticmethod 
+    def sanitizedClearCompletedTasks():
+        query = """DELETE FROM tasks WHERE statusid = 1"""
+        cursor.execute(query)
+        connection.commit()
+
     @staticmethod
     def sanitizedGetStatusName(taskid):
         data = (taskid,)
