@@ -154,6 +154,15 @@
      <height>651</height>
     </rect>
    </property>
+   <property name="styleSheet">
+    <string notr="true">QToolButton#qt_calendar_prevmonth, 
+    QToolButton#qt_calendar_nextmonth {
+        qproperty-icon: none;
+        width: 0px;
+        height: 0px;
+        border: none;
+    }</string>
+   </property>
   </widget>
   <widget class="QLabel" name="label_4">
    <property name="geometry">

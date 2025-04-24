@@ -234,10 +234,7 @@ class ElistaEditOperation(QDialog):
         self.reviseDiscardButton.clicked.connect(self.removeTask)
 
         self.reviseUpdateButton.clicked.connect(self.updateTask)
-        self.reviseDeadlineBox.setDate(QDate.currentDate())
-
-
-
+        self.reviseDeadlineBox.setDate(Database.sanitizedGetDeadline(self.taskId))
 
     def updateTask(self):
         updateName = self.reviseNameBox.text()
@@ -583,7 +580,7 @@ class ElistaMainPage(QDialog):
 
             self.miscTable.setHorizontalHeaderLabels(["Task","Status","Deadline","Task ID"])
 
-            statusData = Database.getSanitizedStatusData(self.session,2)
+            statusData = Database.getSanitizedStatusData(self.session,3)
             self.miscTable.setRowCount(len(statusData))
 
             tableRow = 0
@@ -766,6 +763,15 @@ class Database():
         query = """DELETE FROM tasks WHERE statusid = 1"""
         cursor.execute(query)
         connection.commit()
+
+    @staticmethod 
+    def sanitizedGetDeadline(taskid):
+        data = (taskid,)
+        query = """SELECT deadline FROM tasks WHERE taskid = %s"""
+        cursor.execute(query,data)
+        result = cursor.fetchall()
+
+        return result[0][0]
 
     @staticmethod
     def sanitizedGetStatusName(taskid):
