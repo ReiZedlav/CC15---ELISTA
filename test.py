@@ -37,6 +37,11 @@ class ElistaCalendarOperation(QDialog):
         self.calendarTable.setSelectionBehavior(QTableWidget.SelectRows)
         self.calendarTable.setSelectionMode(QTableWidget.SingleSelection)
 
+        self.calendarSearchBox.textChanged.connect(self.calendarSearchEvent)
+    
+    def calendarSearchEvent(self):
+        self.calendarDynamicComboBox(self.calendarBox.currentText())
+
     def rowClickEvent(self, row, column):
         row_data = []
         for col in range(self.calendarTable.columnCount()):
@@ -102,6 +107,8 @@ class ElistaCalendarOperation(QDialog):
 
     #SORT BY MONTH FEATURE. 
     def calendarDynamicComboBox(self,sortBy):
+        search = self.calendarSearchBox.text()
+
 
         #8756523
         if sortBy == "Priority":
@@ -110,7 +117,7 @@ class ElistaCalendarOperation(QDialog):
             self.calendarTable.setHorizontalHeaderLabels(["Task","Priority","Type","TaskID"])
 
 
-            priorityData = Database.getSanitizedCalendarPriorityData(self.session)
+            priorityData = Database.getSanitizedCalendarPriorityData(self.session,search)
             print(self.calendarData.selectedDate().year()) 
             self.calendarData.selectedDate().month()
             self.calendarTable.setRowCount(len(priorityData))
@@ -124,7 +131,7 @@ class ElistaCalendarOperation(QDialog):
 
             self.calendarTable.setHorizontalHeaderLabels(["Task","Deadline","Type","TaskID"])
 
-            deadlineData = Database.getSanitizedCalendarDeadlineData(self.session)
+            deadlineData = Database.getSanitizedCalendarDeadlineData(self.session,search)
             self.calendarTable.setRowCount(len(deadlineData))
 
 
@@ -139,7 +146,7 @@ class ElistaCalendarOperation(QDialog):
 
             self.calendarTable.setHorizontalHeaderLabels(["Task","Status","Type","TaskID"])
 
-            statusData = Database.getSanitizedCalendarStatusData(self.session)
+            statusData = Database.getSanitizedCalendarStatusData(self.session,search)
             self.calendarTable.setRowCount(len(statusData))
 
 
@@ -341,7 +348,24 @@ class ElistaMainPage(QDialog):
         self.personalTable.cellDoubleClicked.connect(self.rowClickEventOne)
         self.academicTable.cellDoubleClicked.connect(self.rowClickEventTwo)
         self.miscTable.cellDoubleClicked.connect(self.rowClickEventThree)
+
+        self.personalSearchBox.textChanged.connect(self.personalSearchEvent)
+        self.academicSearchBox.textChanged.connect(self.academicSearchEvent)
+        self.miscSearchBox.textChanged.connect(self.miscSearchEvent)
+
+    def personalSearchEvent(self):
+        self.personalDynamicComboBoxes(self.personalBox.currentText())
     
+    def academicSearchEvent(self):
+        self.academicDynamicComboBoxes(self.academicBox.currentText())
+    
+    def miscSearchEvent(self):
+        self.miscDynamicComboBoxes(self.miscBox.currentText())
+
+    def test(self):
+        print(self.personalSearchBox.text())
+
+
     def addMenu(self,location):
         crud = ElistaAddOperation(self.session,location)
         widget.setFixedWidth(480)
@@ -417,13 +441,15 @@ class ElistaMainPage(QDialog):
 
     #MAKE TABLE HERE
     def personalDynamicComboBoxes(self,sortBy):
+        search = self.personalSearchBox.text()
+
         if sortBy == "Priority":
             self.personalTable.resizeRowsToContents()
-            self.personalTable.setColumnCount(4)
+            self.personalTable.setColumnCount(5)
             
             self.personalTable.setHorizontalHeaderLabels(["Task","Priority","Status","Task ID"])
 
-            priorityData = Database.getSanitizedPriorityData(self.session,1) 
+            priorityData = Database.getSanitizedPriorityData(self.session,1,search) 
             self.personalTable.setRowCount(len(priorityData))
 
             tableRow = 0
@@ -442,7 +468,7 @@ class ElistaMainPage(QDialog):
        
             self.personalTable.setHorizontalHeaderLabels(["Task","Deadline","Status", "Task ID"])
 
-            deadlineData = Database.getSanitizedDeadlineData(self.session,1) 
+            deadlineData = Database.getSanitizedDeadlineData(self.session,1,search) 
             self.personalTable.setRowCount(len(deadlineData))
 
             tableRow = 0
@@ -461,7 +487,7 @@ class ElistaMainPage(QDialog):
 
             self.personalTable.setHorizontalHeaderLabels(["Task","Status","Deadline","Task ID"])
 
-            statusData = Database.getSanitizedStatusData(self.session,1)
+            statusData = Database.getSanitizedStatusData(self.session,1,search)
             self.personalTable.setRowCount(len(statusData))
 
             tableRow = 0
@@ -476,13 +502,15 @@ class ElistaMainPage(QDialog):
 
         
     def academicDynamicComboBoxes(self,sortBy):
+        search = self.academicSearchBox.text()
+
         if sortBy == "Priority":
             self.academicTable.resizeRowsToContents()
             self.academicTable.setColumnCount(4)
             
             self.academicTable.setHorizontalHeaderLabels(["Task","Priority","Status","Task ID"])
 
-            priorityData = Database.getSanitizedPriorityData(self.session,2) 
+            priorityData = Database.getSanitizedPriorityData(self.session,2,search) 
             print(priorityData)
             self.academicTable.setRowCount(len(priorityData))
 
@@ -502,7 +530,7 @@ class ElistaMainPage(QDialog):
        
             self.academicTable.setHorizontalHeaderLabels(["Task","Deadline","Status","Task ID"])
 
-            deadlineData = Database.getSanitizedDeadlineData(self.session,2) 
+            deadlineData = Database.getSanitizedDeadlineData(self.session,2,search) 
             self.academicTable.setRowCount(len(deadlineData))
 
             tableRow = 0
@@ -521,7 +549,7 @@ class ElistaMainPage(QDialog):
 
             self.academicTable.setHorizontalHeaderLabels(["Task","Status","Deadline","Task ID"])
 
-            statusData = Database.getSanitizedStatusData(self.session,2)
+            statusData = Database.getSanitizedStatusData(self.session,2,search)
             self.academicTable.setRowCount(len(statusData))
 
             tableRow = 0
@@ -535,13 +563,15 @@ class ElistaMainPage(QDialog):
                 tableRow += 1
 
     def miscDynamicComboBoxes(self,sortBy):
+        search = self.miscSearchBox.text()
+
         if sortBy == "Priority":
             self.miscTable.resizeRowsToContents()
             self.miscTable.setColumnCount(4)
             
             self.miscTable.setHorizontalHeaderLabels(["Task","Priority","Status","Task ID"])
 
-            priorityData = Database.getSanitizedPriorityData(self.session,3) 
+            priorityData = Database.getSanitizedPriorityData(self.session,3,search) 
             print(priorityData)
             self.miscTable.setRowCount(len(priorityData))
 
@@ -561,7 +591,7 @@ class ElistaMainPage(QDialog):
        
             self.miscTable.setHorizontalHeaderLabels(["Task","Deadline","Status","Task ID"])
 
-            deadlineData = Database.getSanitizedDeadlineData(self.session,3) 
+            deadlineData = Database.getSanitizedDeadlineData(self.session,3,search) 
             self.miscTable.setRowCount(len(deadlineData))
 
             tableRow = 0
@@ -580,7 +610,7 @@ class ElistaMainPage(QDialog):
 
             self.miscTable.setHorizontalHeaderLabels(["Task","Status","Deadline","Task ID"])
 
-            statusData = Database.getSanitizedStatusData(self.session,3)
+            statusData = Database.getSanitizedStatusData(self.session,3,search)
             self.miscTable.setRowCount(len(statusData))
 
             tableRow = 0
@@ -758,6 +788,7 @@ statusDict = {
 }
 
 class Database():
+    
     @staticmethod 
     def sanitizedClearCompletedTasks():
         query = """DELETE FROM tasks WHERE statusid = 1"""
@@ -818,27 +849,30 @@ class Database():
 
 
     @staticmethod #ADD YEAR AND MONTH FEATURE
-    def getSanitizedCalendarStatusData(session):
-        data = (session,)
-        query = """SELECT taskname,statusname,typename,taskid from tasks INNER JOIN taskstatus on tasks.statusid = taskstatus.statusid inner join tasktype on tasks.typeid = tasktype.typeid where userid = %s ORDER BY tasks.statusid"""
+    def getSanitizedCalendarStatusData(session,search):
+        searchFilter = f"{search}%"
+        data = (session,searchFilter)
+        query = """SELECT taskname,statusname,typename,taskid from tasks INNER JOIN taskstatus on tasks.statusid = taskstatus.statusid inner join tasktype on tasks.typeid = tasktype.typeid where userid = %s AND taskname LIKE %s ORDER BY tasks.statusid"""
         cursor.execute(query,data)
         result = cursor.fetchall()
         print(result)
         return result
 
     @staticmethod
-    def getSanitizedCalendarDeadlineData(session):
-        data = (session,)
-        query = """SELECT taskname,deadline,typename,taskid from tasks inner join tasktype on tasks.typeid = tasktype.typeid where userid = %s ORDER BY deadline ASC"""
+    def getSanitizedCalendarDeadlineData(session,search):
+        searchFilter = f"{search}%"
+        data = (session,searchFilter)
+        query = """SELECT taskname,deadline,typename,taskid from tasks inner join tasktype on tasks.typeid = tasktype.typeid where userid = %s AND taskname LIKE %s ORDER BY deadline ASC"""
         cursor.execute(query,data)
         result = cursor.fetchall()
         print(result)
         return result
 
     @staticmethod
-    def getSanitizedCalendarPriorityData(session):
-        data = (session,)
-        query = """SELECT taskname,priorityname,typename,taskid FROM tasks INNER JOIN taskpriority ON tasks.priorityid = taskpriority.priorityid INNER JOIN tasktype on tasks.typeid = tasktype.typeid WHERE userid = %s ORDER BY tasks.priorityid ASC"""
+    def getSanitizedCalendarPriorityData(session,search):
+        searchFilter = f"{search}%"
+        data = (session,searchFilter)
+        query = """SELECT taskname,priorityname,typename,taskid FROM tasks INNER JOIN taskpriority ON tasks.priorityid = taskpriority.priorityid INNER JOIN tasktype on tasks.typeid = tasktype.typeid WHERE userid = %s AND taskname LIKE %s ORDER BY tasks.priorityid ASC"""
         cursor.execute(query,data)
         result = cursor.fetchall()
         print(result)
@@ -852,27 +886,30 @@ class Database():
         connection.commit()
         
     @staticmethod
-    def getSanitizedPriorityData(session,typeId):
-        data = (session,typeId)
-        query = """SELECT taskname,priorityname,statusname,taskid FROM tasks INNER JOIN taskstatus ON tasks.statusid = taskstatus.statusid INNER JOIN taskpriority ON tasks.priorityid = taskpriority.priorityid WHERE userid = %s AND typeId = %s ORDER BY taskpriority.priorityid ASC,taskstatus.statusid DESC"""
+    def getSanitizedPriorityData(session,typeId,search):
+        searchFilter = f"{search}%"
+        data = (session,typeId,searchFilter)
+        query = """SELECT taskname,priorityname,statusname,taskid FROM tasks INNER JOIN taskstatus ON tasks.statusid = taskstatus.statusid INNER JOIN taskpriority ON tasks.priorityid = taskpriority.priorityid WHERE userid = %s AND typeId = %s AND taskname LIKE %s ORDER BY taskpriority.priorityid ASC,taskstatus.statusid DESC"""
         cursor.execute(query,data)
         result = cursor.fetchall()
         print(result)
         return result
 
     @staticmethod
-    def getSanitizedDeadlineData(session,typeId):
-        data = (session,typeId)
-        query = """SELECT TaskName,deadline,statusname,taskid FROM Tasks INNER JOIN TaskStatus ON Tasks.statusId = TaskStatus.statusId WHERE userId = %s AND typeId = %s ORDER BY deadline ASC,taskstatus.statusid DESC"""
+    def getSanitizedDeadlineData(session,typeId,search):
+        searchFilter = f"{search}%"
+        data = (session,typeId,searchFilter)
+        query = """SELECT TaskName,deadline,statusname,taskid FROM Tasks INNER JOIN TaskStatus ON Tasks.statusId = TaskStatus.statusId WHERE userId = %s AND typeId = %s AND taskname LIKE %s ORDER BY deadline ASC,taskstatus.statusid DESC"""
         cursor.execute(query,data)
         result = cursor.fetchall()
         print(result)
         return result
 
     @staticmethod
-    def getSanitizedStatusData(session,typeId):
-        data = (session,typeId)
-        query = """SELECT taskname,statusname,deadline,taskid FROM tasks INNER JOIN taskstatus on tasks.statusid = taskstatus.statusid WHERE userid = %s AND typeid = %s ORDER BY taskstatus.statusid ASC"""
+    def getSanitizedStatusData(session,typeId,search):
+        searchFilter = f"{search}%"
+        data = (session,typeId,searchFilter)
+        query = """SELECT taskname,statusname,deadline,taskid FROM tasks INNER JOIN taskstatus on tasks.statusid = taskstatus.statusid WHERE userid = %s AND typeid = %s AND taskname LIKE %s ORDER BY taskstatus.statusid ASC"""
         cursor.execute(query,data)
         result = cursor.fetchall()
         print(result)
