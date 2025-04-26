@@ -445,7 +445,7 @@ class ElistaMainPage(QDialog):
 
         if sortBy == "Priority":
             self.personalTable.resizeRowsToContents()
-            self.personalTable.setColumnCount(5)
+            self.personalTable.setColumnCount(4)
             
             self.personalTable.setHorizontalHeaderLabels(["Task","Priority","Status","Task ID"])
 

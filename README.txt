@@ -5,3 +5,5 @@ pip install PyQt5
 pip install mysql-connector-python
 
 pip install bcrypt
+
+pip install -U matplotlib
