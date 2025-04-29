@@ -108,8 +108,7 @@ class ElistaCalendarOperation(QDialog):
     #SORT BY MONTH FEATURE. 
     def calendarDynamicComboBox(self,sortBy):
         search = self.calendarSearchBox.text()
-
-
+        
         #8756523
         if sortBy == "Priority":
             self.calendarTable.resizeRowsToContents()
