@@ -171,10 +171,10 @@
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">color: rgb(225,225,225); font-size: 15px;</string>
+    <string notr="true">color: rgb(225,225,225); font-size: 12px;</string>
    </property>
    <property name="text">
-    <string>FEEDBACK</string>
+    <string>FEEDBACK INFORMATION HERE</string>
    </property>
   </widget>
  </widget>

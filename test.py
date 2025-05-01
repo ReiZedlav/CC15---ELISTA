@@ -193,6 +193,7 @@ class ElistaAddOperation(QDialog):
 
         self.addToLabel.setText("ADDING TO " + str(aliases[self.typeName]).upper())
 
+        #forgot what this for lol
         meanings = {
 
         }
@@ -751,48 +752,50 @@ class Signup(QDialog):
     def createAccount(self):
         username = self.signupUsernameForm.text()
         
-        #MAKE USERNAMES SHORT
+        if len(username) > 8:
+            self.feedbackLabel.setVisible(True)
+            self.feedbackLabel.setText("Username must be less than 8 characters!")
 
-        #ADD FORCED STRONG PASSWORD MECHHANISM
+        elif len(username) <= 8:
 
-        if (self.SignupPasswordForm.text() == self.SignupConfirmPasswordForm.text()) and (self.SignupPasswordForm.text() != "" and self.SignupConfirmPasswordForm.text() != "") and (self.signupUsernameForm.text() != ""): #note to self. make the signup proccess strict asf. 
+            if (self.SignupPasswordForm.text() == self.SignupConfirmPasswordForm.text()) and (self.SignupPasswordForm.text() != "" and self.SignupConfirmPasswordForm.text() != "") and (self.signupUsernameForm.text() != ""): #note to self. make the signup proccess strict asf. 
             
-            #logic here
-            if len(self.SignupPasswordForm.text()) < 8:
-                self.feedbackLabel.setVisible(True)
-                self.feedbackLabel.setText("Password must be atleast 8 characters!")
-            
-            elif len(self.SignupPasswordForm.text()) >= 8:
-                if not re.search(r'[A-Z]',self.SignupPasswordForm.text()):
+                #logic here
+                if len(self.SignupPasswordForm.text()) < 8:
                     self.feedbackLabel.setVisible(True)
-                    self.feedbackLabel.setText("Password must have atleast one uppercase letter!")
-                
-                else:
-                    if not re.search(r'[a-z]',self.SignupPasswordForm.text()):
+                    self.feedbackLabel.setText("Password must be atleast 8 characters!")
+            
+                elif len(self.SignupPasswordForm.text()) >= 8:
+                    if not re.search(r'[A-Z]',self.SignupPasswordForm.text()):
                         self.feedbackLabel.setVisible(True)
-                        self.feedbackLabel.setText("Password must have atleast one lowercase letter!")
-
+                        self.feedbackLabel.setText("Password must have atleast one uppercase letter!")
+                
                     else:
-                        if not re.search(r'\d',self.SignupPasswordForm.text()):
+                        if not re.search(r'[a-z]',self.SignupPasswordForm.text()):
                             self.feedbackLabel.setVisible(True)
-                            self.feedbackLabel.setText("Password must have atleast one number!")
+                            self.feedbackLabel.setText("Password must have atleast one lowercase letter!")
 
                         else:
-                            if not re.search(r'[!@#$%^&*(),.?":{}|<>]',self.SignupPasswordForm.text()):
+                            if not re.search(r'\d',self.SignupPasswordForm.text()):
                                 self.feedbackLabel.setVisible(True)
-                                self.feedbackLabel.setText("Password must have atleast one special character!")
-                            
+                                self.feedbackLabel.setText("Password must have atleast one number!")
+
                             else:
-                                password = self.SignupPasswordForm.text() 
-                                hashed = bcrypt.hashpw(password.encode('utf-8'),bcrypt.gensalt())
+                                if not re.search(r'[!@#$%^&*(),.?":{}|<>]',self.SignupPasswordForm.text()):
+                                    self.feedbackLabel.setVisible(True)
+                                    self.feedbackLabel.setText("Password must have atleast one special character!")
+                            
+                                else:
+                                    password = self.SignupPasswordForm.text() 
+                                    hashed = bcrypt.hashpw(password.encode('utf-8'),bcrypt.gensalt())
             
-                                inserted = Database.sanitizedInsertUser(username,hashed)
+                                    inserted = Database.sanitizedInsertUser(username,hashed)
             
-                                if inserted:
-                                    print("Account created!",username,hashed) #DEBUGGING PURPOSES. DO NOT DELETE
-                                    goBack = Login()
-                                    widget.addWidget(goBack)
-                                    widget.setCurrentIndex(widget.currentIndex()+1)
+                                    if inserted:
+                                        print("Account created!",username,hashed) #DEBUGGING PURPOSES. DO NOT DELETE
+                                        goBack = Login()
+                                        widget.addWidget(goBack)
+                                        widget.setCurrentIndex(widget.currentIndex()+1)
         else:
             Utilities.mismatchedPassword()
 
