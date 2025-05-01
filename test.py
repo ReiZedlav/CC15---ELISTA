@@ -6,6 +6,7 @@ from PyQt5.uic import loadUi
 import mysql.connector
 import bcrypt
 import datetime
+import re
 
 #CHANGE THE LOCATION OF ADDING TO THE TOP OF type
 
@@ -737,29 +738,64 @@ class Signup(QDialog):
         self.SignupPasswordForm.setEchoMode(QtWidgets.QLineEdit.Password)
         self.SignupConfirmPasswordForm.setEchoMode(QtWidgets.QLineEdit.Password)
 
+        self.feedbackLabel.setVisible(False)
+
     def goBackToLogin(self):
         loginPage = Login()
         widget.addWidget(loginPage)
         widget.setCurrentIndex(widget.currentIndex() + 1) 
 
+        
+
 
     def createAccount(self):
         username = self.signupUsernameForm.text()
         
-        #MAKE USERNAMES EXTREMELY SHORT
+        #MAKE USERNAMES SHORT
 
         #ADD FORCED STRONG PASSWORD MECHHANISM
+
         if (self.SignupPasswordForm.text() == self.SignupConfirmPasswordForm.text()) and (self.SignupPasswordForm.text() != "" and self.SignupConfirmPasswordForm.text() != "") and (self.signupUsernameForm.text() != ""): #note to self. make the signup proccess strict asf. 
-            password = self.SignupPasswordForm.text() 
-            hashed = bcrypt.hashpw(password.encode('utf-8'),bcrypt.gensalt())
             
-            inserted = Database.sanitizedInsertUser(username,hashed)
+            #logic here
+            if len(self.SignupPasswordForm.text()) < 8:
+                self.feedbackLabel.setVisible(True)
+                self.feedbackLabel.setText("Password must be atleast 8 characters!")
             
-            if inserted:
-                print("Account created!",username,hashed) #DEBUGGING PURPOSES. DO NOT DELETE
-                goBack = Login()
-                widget.addWidget(goBack)
-                widget.setCurrentIndex(widget.currentIndex()+1)
+            elif len(self.SignupPasswordForm.text()) >= 8:
+                if not re.search(r'[A-Z]',self.SignupPasswordForm.text()):
+                    self.feedbackLabel.setVisible(True)
+                    self.feedbackLabel.setText("Password must have atleast one uppercase letter!")
+                
+                else:
+                    if not re.search(r'[a-z]',self.SignupPasswordForm.text()):
+                        self.feedbackLabel.setVisible(True)
+                        self.feedbackLabel.setText("Password must have atleast one lowercase letter!")
+
+                    else:
+                        if not re.search(r'\d',self.SignupPasswordForm.text()):
+                            self.feedbackLabel.setVisible(True)
+                            self.feedbackLabel.setText("Password must have atleast one number!")
+
+                        else:
+                            if not re.search(r'[!@#$%^&*(),.?":{}|<>]',self.SignupPasswordForm.text()):
+                                self.feedbackLabel.setVisible(True)
+                                self.feedbackLabel.setText("Password must have atleast one special character!")
+                            
+                            else:
+                                password = self.SignupPasswordForm.text() 
+                                hashed = bcrypt.hashpw(password.encode('utf-8'),bcrypt.gensalt())
+            
+                                inserted = Database.sanitizedInsertUser(username,hashed)
+            
+                                if inserted:
+                                    print("Account created!",username,hashed) #DEBUGGING PURPOSES. DO NOT DELETE
+                                    goBack = Login()
+                                    widget.addWidget(goBack)
+                                    widget.setCurrentIndex(widget.currentIndex()+1)
+        else:
+            Utilities.mismatchedPassword()
+
 
 typeDict = {
     "Personal": 1,
@@ -1041,6 +1077,16 @@ class Utilities:
         msg.setWindowTitle("Invalid Credentials")
         msg.setText("Error: Username Or Password Mismatch")
         msg.setInformativeText("Try Again!")
+        msg.setStandardButtons(QMessageBox.Ok)
+        msg.exec_()
+    
+    @staticmethod
+    def mismatchedPassword():
+        msg = QMessageBox()
+        msg.setIcon(QMessageBox.Warning)
+        msg.setWindowTitle("Mismatched Password")
+        msg.setText("Error: Mismatched Password")
+        msg.setInformativeText("Try Again")
         msg.setStandardButtons(QMessageBox.Ok)
         msg.exec_()
 
