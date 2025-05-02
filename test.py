@@ -1,4 +1,4 @@
-from PyQt5.QtCore import Qt, QDate
+from PyQt5.QtCore import Qt, QDate, QTimer
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QApplication,QWidget,QLabel,QPushButton,QVBoxLayout,QHBoxLayout,QLineEdit,QGridLayout,QMainWindow,QMessageBox,QTextEdit, QDialog,QTableWidget, QHeaderView
 from PyQt5.QtGui import QFont, QGuiApplication
@@ -216,9 +216,12 @@ class ElistaAddOperation(QDialog):
 
         #TASK NAME MUST NOT BE EMPTY
 
-        Database.sanitizedInsertTask(taskOwner,taskPriority,taskType,taskStatus,taskName,taskDeadline)
+        if taskName == "" or taskname.isspace():
+            Utilities.emptyFields()
+        else:
+            Database.sanitizedInsertTask(taskOwner,taskPriority,taskType,taskStatus,taskName,taskDeadline)
 
-        Utilities.successfulAction()
+            Utilities.successfulAction()
 
 class ElistaEditOperation(QDialog):
     def __init__(self,session,taskId,typeName,priority,status,isFromMain):
@@ -251,22 +254,26 @@ class ElistaEditOperation(QDialog):
         updateType = self.reviseTypeBox.currentText()
         updateDeadline = self.reviseDeadlineBox.date().toString("yyyy-MM-dd")
 
-        Database.sanitizedUpdateTask(updateName,updatePriority,updateStatus,updateType,updateDeadline,self.taskId)
-
-        Utilities.successfulAction()
-
-        if self.isFromMain:
-            loggedIn = ElistaMainPage(self.session)
-            widget.addWidget(loggedIn)
-            widget.setCurrentIndex(widget.currentIndex() + 1)
-            widget.setFixedWidth(1400)
-            widget.setFixedHeight(800)
+        if updateName == "" or updateName.isspace():
+            Utilities.emptyFields()
         else:
-            calendar = ElistaCalendarOperation(self.session) 
-            widget.addWidget(calendar)
-            widget.setCurrentIndex(widget.currentIndex() + 1)
-            widget.setFixedWidth(1400)
-            widget.setFixedHeight(800)
+
+            Database.sanitizedUpdateTask(updateName,updatePriority,updateStatus,updateType,updateDeadline,self.taskId)
+
+            Utilities.successfulAction()
+
+            if self.isFromMain:
+                loggedIn = ElistaMainPage(self.session)
+                widget.addWidget(loggedIn)
+                widget.setCurrentIndex(widget.currentIndex() + 1)
+                widget.setFixedWidth(1400)
+                widget.setFixedHeight(800)
+            else:
+                calendar = ElistaCalendarOperation(self.session) 
+                widget.addWidget(calendar)
+                widget.setCurrentIndex(widget.currentIndex() + 1)
+                widget.setFixedWidth(1400)
+                widget.setFixedHeight(800)
 
 
 
@@ -727,8 +734,8 @@ class Login(QDialog):
             widget.setCurrentIndex(widget.currentIndex() + 1)
             widget.setFixedWidth(1400)
             widget.setFixedHeight(800)
-
-
+        
+       
 
 class Signup(QDialog):
     def __init__(self):
@@ -1089,6 +1096,16 @@ class Utilities:
         msg.setIcon(QMessageBox.Warning)
         msg.setWindowTitle("Mismatched Password")
         msg.setText("Error: Mismatched Password")
+        msg.setInformativeText("Try Again")
+        msg.setStandardButtons(QMessageBox.Ok)
+        msg.exec_()
+
+    @staticmethod
+    def emptyFields():
+        msg = QMessageBox()
+        msg.setIcon(QMessageBox.Warning)
+        msg.setWindowTitle("Blank Fields")
+        msg.setText("Error: Taskname must not be empty!")
         msg.setInformativeText("Try Again")
         msg.setStandardButtons(QMessageBox.Ok)
         msg.exec_()
