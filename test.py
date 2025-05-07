@@ -216,7 +216,7 @@ class ElistaAddOperation(QDialog):
 
         #TASK NAME MUST NOT BE EMPTY
 
-        if taskName == "" or taskname.isspace():
+        if taskName == "" or taskName.isspace():
             Utilities.emptyFields()
         else:
             Database.sanitizedInsertTask(taskOwner,taskPriority,taskType,taskStatus,taskName,taskDeadline)
