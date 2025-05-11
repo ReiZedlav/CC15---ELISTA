@@ -8,5 +8,6 @@ pip install mysql-connector-python
 
 pip install bcrypt
 
-pip install -U matplotlib
 
+pip install --upgrade setuptools wheel
+pip install playsound 

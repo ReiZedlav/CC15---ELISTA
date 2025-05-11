@@ -1,26 +1,35 @@
+import mysql.connector
 from PyQt5.QtCore import Qt, QDate, QTimer
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QApplication,QWidget,QLabel,QPushButton,QVBoxLayout,QHBoxLayout,QLineEdit,QGridLayout,QMainWindow,QMessageBox,QTextEdit, QDialog,QTableWidget, QHeaderView
 from PyQt5.QtGui import QFont, QGuiApplication
 from PyQt5.uic import loadUi
-import mysql.connector
+from playsound import playsound
 import bcrypt
 import datetime
 import re
+import threading
 
-#CHANGE THE LOCATION OF ADDING TO THE TOP OF type
-
-#DATABASE CONFIGURATION
+#DATABASE CONFIGURATION - IMPORTANT
 connection = mysql.connector.connect(host="localhost",database="cc15",user="root",password="root")
 cursor = connection.cursor(prepared=True)
 
+class Soundtrack:
+    @staticmethod
+    def playMainMusic():
+        while True:
+            playsound("soundtrack/homebrew.mp3")
+        
+theme = threading.Thread(target=Soundtrack.playMainMusic)
+theme.start()
+
 class ElistaCalendarOperation(QDialog):
     #FEATURE TO DO LIST SHOULD BE BY MONTH
-    
+
     def __init__(self,session):
         super().__init__()
         self.session = session
-        loadUi("elistaCalendar.ui",self)
+        loadUi("UserInterface/elistaCalendar.ui",self)
         self.authenticatedNameLabel.setText(Database.getUsername(session))
         #create updating buttons
         self.firstAuthenticatedButton.clicked.connect(self.dynamicButton)
@@ -179,7 +188,7 @@ class ElistaAddOperation(QDialog):
         super().__init__()
         self.session = session
         self.typeName = typeName
-        loadUi("elistaAdd.ui",self)
+        loadUi("UserInterface/elistaAdd.ui",self)
 
         #task adder functionality here
         self.addTaskSubmitBox.clicked.connect(self.addTask)
@@ -233,7 +242,7 @@ class ElistaEditOperation(QDialog):
         self.status = status
         self.isFromMain = isFromMain
 
-        loadUi("elistaUpdate.ui",self)
+        loadUi("UserInterface/elistaUpdate.ui",self)
         self.reviseTypeBox.setCurrentText(self.typeName)
         self.revisePriorityBox.setCurrentText(self.priority)
         self.reviseStatusBox.setCurrentText(self.status)
@@ -305,7 +314,7 @@ class ElistaMainPage(QDialog):
     def __init__(self,session): #SESSION IS VERY IMPORTANT
         super().__init__()
         self.session = session
-        loadUi("elistaMain.ui",self)
+        loadUi("UserInterface/elistaMain.ui",self)
         self.authenticatedNameLabel.setText(Database.getUsername(session))
         #create updating buttons
         self.firstAuthenticatedButton.clicked.connect(self.dynamicButton)
@@ -703,7 +712,7 @@ class ElistaMainPage(QDialog):
 class Login(QDialog):
     def __init__(self):
         super().__init__()
-        loadUi("login.ui",self)
+        loadUi("UserInterface/login.ui",self)
         self.LoginSubmitButton.clicked.connect(self.authenticate)
         self.LoginPasswordForm.setEchoMode(QtWidgets.QLineEdit.Password)
         self.createAccountButton.clicked.connect(self.visitSignupPage)
@@ -740,7 +749,7 @@ class Login(QDialog):
 class Signup(QDialog):
     def __init__(self):
         super(Signup,self).__init__()
-        loadUi("create.ui",self)
+        loadUi("UserInterface/create.ui",self)
         self.signupSubmitButton.clicked.connect(self.createAccount)
         self.signupReturnButton.clicked.connect(self.goBackToLogin)
         self.SignupPasswordForm.setEchoMode(QtWidgets.QLineEdit.Password)
