@@ -9,5 +9,10 @@ pip install mysql-connector-python
 pip install bcrypt
 
 
+
+
+
+E RUN SA CMD (ADMIN):
 pip install --upgrade setuptools wheel
-pip install playsound 
+pip install playsound==1.2.2
+

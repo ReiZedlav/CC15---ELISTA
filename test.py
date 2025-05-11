@@ -19,7 +19,31 @@ class Soundtrack:
     def playMainMusic():
         while True:
             playsound("soundtrack/homebrew.mp3")
-        
+    
+    @staticmethod
+    def buttonSFX():
+        playsound("soundtrack/buttonPress.wav")
+
+    @staticmethod
+    def errorSFX():
+        playsound("soundtrack/errorSound.wav")
+
+    @staticmethod
+    def rowClickSFX(): 
+        playsound("soundtrack/tableClick.wav")
+
+    @staticmethod
+    def doubleClickSFX():
+        playsound("soundtrack/doubleClick.wav")
+
+    @staticmethod
+    def loginPageSFX():
+        playsound("soundtrack/loginConfirmation.wav")
+    
+    @staticmethod
+    def calendarClickSFX():
+        playsound("soundtrack/calendarClick.wav")
+
 theme = threading.Thread(target=Soundtrack.playMainMusic)
 theme.start()
 
@@ -43,16 +67,22 @@ class ElistaCalendarOperation(QDialog):
         self.calendarData.clicked.connect(self.calendarPressEvent)
 
         self.calendarTable.cellDoubleClicked.connect(self.rowClickEvent)
+        self.calendarTable.cellClicked.connect(self.tableSFX)
+
         self.calendarTable.verticalHeader().setVisible(False)
         self.calendarTable.setSelectionBehavior(QTableWidget.SelectRows)
         self.calendarTable.setSelectionMode(QTableWidget.SingleSelection)
 
         self.calendarSearchBox.textChanged.connect(self.calendarSearchEvent)
     
+    def tableSFX(self):
+        threading.Thread(target=Soundtrack.rowClickSFX).start()
+
     def calendarSearchEvent(self):
         self.calendarDynamicComboBox(self.calendarBox.currentText())
 
     def rowClickEvent(self, row, column):
+        threading.Thread(target=Soundtrack.doubleClickSFX).start()
         row_data = []
         for col in range(self.calendarTable.columnCount()):
             item = self.calendarTable.item(row, col)
@@ -70,6 +100,7 @@ class ElistaCalendarOperation(QDialog):
     
     #DESIGN THIS FUNCTIONALITY
     def calendarPressEvent(self, date: QDate):
+        threading.Thread(target=Soundtrack.calendarClickSFX).start()
         year = date.year()
         month = date.month()
         day = date.day()
@@ -363,12 +394,21 @@ class ElistaMainPage(QDialog):
         #CREATE CLICK TABLE ROW EVENT
 
         self.personalTable.cellDoubleClicked.connect(self.rowClickEventOne)
+        self.personalTable.cellClicked.connect(self.rowClickEventAllSFX)
+
         self.academicTable.cellDoubleClicked.connect(self.rowClickEventTwo)
+        self.academicTable.cellClicked.connect(self.rowClickEventAllSFX)
+
         self.miscTable.cellDoubleClicked.connect(self.rowClickEventThree)
+        self.miscTable.cellClicked.connect(self.rowClickEventAllSFX)
+
 
         self.personalSearchBox.textChanged.connect(self.personalSearchEvent)
         self.academicSearchBox.textChanged.connect(self.academicSearchEvent)
         self.miscSearchBox.textChanged.connect(self.miscSearchEvent)
+
+    def rowClickEventAllSFX(self):
+        threading.Thread(target=Soundtrack.rowClickSFX).start()
 
     def personalSearchEvent(self):
         self.personalDynamicComboBoxes(self.personalBox.currentText())
@@ -399,17 +439,21 @@ class ElistaMainPage(QDialog):
 
         if pressed == "Personalize":
             print("it works!")
+            threading.Thread(target=Soundtrack.buttonSFX).start()
             self.addMenu("Personal")
         
         if pressed == "Assign":
             print("Assign works!")
+            threading.Thread(target=Soundtrack.buttonSFX).start()
             self.addMenu("Assign")
 
         if pressed == "Plan":
             print("Plan works!")
+            threading.Thread(target=Soundtrack.buttonSFX).start()
             self.addMenu("Plan")
 
     def rowClickEventOne(self, row, column):
+        threading.Thread(target=Soundtrack.doubleClickSFX).start()
         row_data = []
         for col in range(self.personalTable.columnCount()):
             item = self.personalTable.item(row, col)
@@ -428,6 +472,7 @@ class ElistaMainPage(QDialog):
         print("Row clicked:", row_data)
     
     def rowClickEventTwo(self,row,column):
+        threading.Thread(target=Soundtrack.doubleClickSFX).start()
         row_data = []
         for col in range(self.academicTable.columnCount()):
             item = self.academicTable.item(row, col)
@@ -442,6 +487,7 @@ class ElistaMainPage(QDialog):
         print("Row clicked:", row_data)
     
     def rowClickEventThree(self,row,column):
+        threading.Thread(target=Soundtrack.doubleClickSFX).start()
         row_data = []
         for col in range(self.miscTable.columnCount()):
             item = self.miscTable.item(row, col)
@@ -725,11 +771,14 @@ class Login(QDialog):
 
     
     def visitSignupPage(self):
+        threading.Thread(target=Soundtrack.loginPageSFX).start()
         visitPage = Signup()
         widget.addWidget(visitPage)
         widget.setCurrentIndex(widget.currentIndex() + 1) 
 
     def authenticate(self):
+        threading.Thread(target=Soundtrack.loginPageSFX).start()
+
         username = self.LoginEmailForm.text()
         password = self.LoginPasswordForm.text()
 
@@ -758,6 +807,7 @@ class Signup(QDialog):
         self.feedbackLabel.setVisible(False)
 
     def goBackToLogin(self):
+        threading.Thread(target=Soundtrack.loginPageSFX).start()
         loginPage = Login()
         widget.addWidget(loginPage)
         widget.setCurrentIndex(widget.currentIndex() + 1) 
@@ -766,6 +816,7 @@ class Signup(QDialog):
 
 
     def createAccount(self):
+        threading.Thread(target=Soundtrack.loginPageSFX).start()
         username = self.signupUsernameForm.text()
         
         if len(username) > 8:
