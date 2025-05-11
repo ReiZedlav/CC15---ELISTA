@@ -25,11 +25,7 @@ class Soundtrack:
         playsound("soundtrack/buttonPress.wav")
 
     @staticmethod
-    def errorSFX():
-        playsound("soundtrack/errorSound.wav")
-
-    @staticmethod
-    def rowClickSFX(): 
+    def rowClickSFX(): #CHANGE THIS!!!
         playsound("soundtrack/tableClick.wav")
 
     @staticmethod
