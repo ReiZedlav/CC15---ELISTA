@@ -2,7 +2,7 @@ import mysql.connector
 from PyQt5.QtCore import Qt, QDate, QTimer
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QApplication,QWidget,QLabel,QPushButton,QVBoxLayout,QHBoxLayout,QLineEdit,QGridLayout,QMainWindow,QMessageBox,QTextEdit, QDialog,QTableWidget, QHeaderView
-from PyQt5.QtGui import QFont, QGuiApplication
+from PyQt5.QtGui import QFont, QGuiApplication, QIcon
 from PyQt5.uic import loadUi
 from playsound import playsound
 import bcrypt
@@ -25,7 +25,7 @@ class Soundtrack:
         playsound("soundtrack/buttonPress.wav")
 
     @staticmethod
-    def rowClickSFX(): #CHANGE THIS!!!
+    def rowClickSFX(): 
         playsound("soundtrack/tableClick.wav")
 
     @staticmethod
@@ -39,6 +39,14 @@ class Soundtrack:
     @staticmethod
     def calendarClickSFX():
         playsound("soundtrack/calendarClick.wav")
+    
+    @staticmethod
+    def authenticatedButtonSFX():
+        playsound("soundtrack/authenticatedButtonClick.wav")
+
+    @staticmethod
+    def updateClickSFX():
+        playsound("soundtrack/updateClick.wav")
 
 theme = threading.Thread(target=Soundtrack.playMainMusic)
 theme.start()
@@ -194,6 +202,7 @@ class ElistaCalendarOperation(QDialog):
         pressed = self.sender()
 
         if pressed == self.firstAuthenticatedButton:
+            threading.Thread(target=Soundtrack.authenticatedButtonSFX).start()
             loggedIn = ElistaMainPage(self.session)
             widget.addWidget(loggedIn)
             widget.setCurrentIndex(widget.currentIndex() + 1)
@@ -201,12 +210,14 @@ class ElistaCalendarOperation(QDialog):
             widget.setFixedHeight(800)
             
         elif pressed == self.thirdAuthenticatedButton:
+            threading.Thread(target=Soundtrack.authenticatedButtonSFX).start()
             calendar = ElistaCalendarOperation(self.session) 
             widget.addWidget(calendar)
             widget.setCurrentIndex(widget.currentIndex() + 1) 
 
 
         elif pressed == self.fourthAuthenticatedButton:
+            threading.Thread(target=Soundtrack.authenticatedButtonSFX).start()
             Utilities.confirmLogout()
             
 
@@ -235,6 +246,7 @@ class ElistaAddOperation(QDialog):
         }
 
     def returnToMainPage(self):
+        threading.Thread(target=Soundtrack.updateClickSFX).start()
         loggedIn = ElistaMainPage(self.session)
         widget.addWidget(loggedIn)
         widget.setCurrentIndex(widget.currentIndex() + 1)
@@ -243,6 +255,7 @@ class ElistaAddOperation(QDialog):
 
     def addTask(self):
         print(self.typeName)
+        threading.Thread(target=Soundtrack.updateClickSFX).start()
         taskOwner = self.session
         taskPriority = self.addTaskPriorityBox.currentText()
         taskType = self.typeName
@@ -284,6 +297,7 @@ class ElistaEditOperation(QDialog):
         self.reviseDeadlineBox.setDate(Database.sanitizedGetDeadline(self.taskId))
 
     def updateTask(self):
+        threading.Thread(target=Soundtrack.updateClickSFX).start()
         updateName = self.reviseNameBox.text()
         updatePriority = self.revisePriorityBox.currentText()
         updateStatus = self.reviseStatusBox.currentText()
@@ -314,6 +328,7 @@ class ElistaEditOperation(QDialog):
 
 
     def returnToMainPage(self):
+        threading.Thread(target=Soundtrack.updateClickSFX).start()
         if self.isFromMain:
             loggedIn = ElistaMainPage(self.session)
             widget.addWidget(loggedIn)
@@ -328,6 +343,7 @@ class ElistaEditOperation(QDialog):
             widget.setFixedHeight(800)
 
     def removeTask(self):
+        threading.Thread(target=Soundtrack.updateClickSFX).start()
         Database.sanitizedDeleteTask(self.taskId)
         self.returnToMainPage()
 
@@ -701,6 +717,7 @@ class ElistaMainPage(QDialog):
         pressed = self.sender()
 
         if pressed == self.firstAuthenticatedButton:
+            threading.Thread(target=Soundtrack.authenticatedButtonSFX).start()
             loggedIn = ElistaMainPage(self.session)
             widget.addWidget(loggedIn)
             widget.setCurrentIndex(widget.currentIndex() + 1)
@@ -720,12 +737,15 @@ class ElistaMainPage(QDialog):
 
 
         elif pressed == self.thirdAuthenticatedButton:
+            threading.Thread(target=Soundtrack.authenticatedButtonSFX).start()
             calendar = ElistaCalendarOperation(self.session) 
             widget.addWidget(calendar)
             widget.setCurrentIndex(widget.currentIndex() + 1) 
 
 
         elif pressed == self.fourthAuthenticatedButton:
+            threading.Thread(target=Soundtrack.authenticatedButtonSFX).start()
+
             Utilities.confirmLogout()
             
 

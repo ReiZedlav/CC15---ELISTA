@@ -33,35 +33,57 @@
   <widget class="QPushButton" name="firstAuthenticatedButton">
    <property name="geometry">
     <rect>
-     <x>40</x>
+     <x>20</x>
      <y>230</y>
-     <width>111</width>
+     <width>141</width>
      <height>231</height>
     </rect>
    </property>
    <property name="text">
-    <string>My Lists</string>
+    <string/>
+   </property>
+   <property name="icon">
+    <iconset>
+     <normalon>../Assets/todoListIcon.png</normalon>
+    </iconset>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>128</width>
+     <height>128</height>
+    </size>
    </property>
   </widget>
   <widget class="QPushButton" name="thirdAuthenticatedButton">
    <property name="geometry">
     <rect>
-     <x>40</x>
+     <x>20</x>
      <y>470</y>
-     <width>111</width>
+     <width>141</width>
      <height>231</height>
     </rect>
    </property>
    <property name="text">
-    <string>Calendar</string>
+    <string/>
+   </property>
+   <property name="icon">
+    <iconset>
+     <normalon>../Assets/calendarLogo.png</normalon>
+    </iconset>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>256</width>
+     <height>256</height>
+    </size>
    </property>
   </widget>
   <widget class="QPushButton" name="fourthAuthenticatedButton">
    <property name="geometry">
     <rect>
-     <x>40</x>
+     <x>20</x>
      <y>710</y>
-     <width>111</width>
+     <width>141</width>
      <height>61</height>
     </rect>
    </property>
