@@ -1128,12 +1128,14 @@ class Utilities:
         response = msg.exec_()
 
         if response == QMessageBox.Yes: #goback
+            threading.Thread(target=Soundtrack.authenticatedButtonSFX).start()
             loginPage = Login()
             widget.addWidget(loginPage)
             widget.setFixedWidth(480)
             widget.setFixedHeight(600)
             widget.setCurrentIndex(widget.currentIndex() + 1) 
         else:
+            threading.Thread(target=Soundtrack.authenticatedButtonSFX).start()
             print("User canceled logout.")
 
     @staticmethod
