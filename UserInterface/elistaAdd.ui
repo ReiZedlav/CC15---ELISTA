@@ -6,21 +6,77 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>480</width>
-    <height>600</height>
+    <width>448</width>
+    <height>601</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">/* Entire Dialog */
+QDialog {
+    background-color: #F9FAFB;
+    color: #111827; /* Dark gray, highly readable */
+}
+
+/* Labels */
+QLabel {
+    color: #1F2937; /* Stronger label color */
+}
+
+/* Text Fields */
+QLineEdit {
+    background-color: #FFFFFF;
+    border: 1px solid #D1D5DB;
+    border-radius: 6px;
+    padding: 6px 10px;
+    font-size: 14px;
+    color: #111827; /* Input text */
+}
+
+/* Primary Button */
+QPushButton {
+    background-color: #4F46E5;
+    border: none;
+    color: #FFFFFF;
+    border-radius: 6px;
+    padding: 8px 14px;
+    font-size: 14px;
+    font-weight: 500;
+}
+QPushButton:hover {
+    background-color: #4338CA;
+}
+QPushButton:pressed {
+    background-color: #3730A3;
+}
+
+/* Optional: Secondary Button */
+QPushButton#secondaryButton {
+    background-color: #E5E7EB;
+    color: #1F2937;
+}
+QPushButton#secondaryButton:hover {
+    background-color: #D1D5DB;
+}</string>
+  </property>
   <widget class="QLabel" name="addToLabel">
    <property name="geometry">
     <rect>
-     <x>80</x>
-     <y>100</y>
-     <width>381</width>
+     <x>100</x>
+     <y>130</y>
+     <width>251</width>
      <height>101</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Inter</family>
+     <pointsize>-1</pointsize>
+     <weight>50</weight>
+     <bold>false</bold>
+    </font>
    </property>
    <property name="styleSheet">
     <string notr="true">font-size: 30px;</string>
@@ -32,11 +88,16 @@
   <widget class="QTextEdit" name="taskNameField">
    <property name="geometry">
     <rect>
-     <x>80</x>
-     <y>270</y>
-     <width>301</width>
-     <height>61</height>
+     <x>150</x>
+     <y>220</y>
+     <width>271</width>
+     <height>41</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Inter</family>
+    </font>
    </property>
    <property name="placeholderText">
     <string/>
@@ -45,14 +106,20 @@
   <widget class="QLabel" name="label_5">
    <property name="geometry">
     <rect>
-     <x>80</x>
-     <y>180</y>
-     <width>201</width>
-     <height>81</height>
+     <x>10</x>
+     <y>210</y>
+     <width>131</width>
+     <height>61</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <family>Inter</family>
+     <pointsize>-1</pointsize>
+    </font>
+   </property>
    <property name="styleSheet">
-    <string notr="true">font-size: 40px;
+    <string notr="true">font-size: 20px;
 </string>
    </property>
    <property name="text">
@@ -62,11 +129,17 @@
   <widget class="QLabel" name="label_7">
    <property name="geometry">
     <rect>
-     <x>80</x>
-     <y>330</y>
-     <width>71</width>
+     <x>10</x>
+     <y>310</y>
+     <width>91</width>
      <height>51</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Inter</family>
+     <pointsize>-1</pointsize>
+    </font>
    </property>
    <property name="styleSheet">
     <string notr="true">font-size: 20px;
@@ -79,11 +152,16 @@
   <widget class="QComboBox" name="addTaskPriorityBox">
    <property name="geometry">
     <rect>
-     <x>170</x>
-     <y>350</y>
-     <width>101</width>
-     <height>22</height>
+     <x>150</x>
+     <y>310</y>
+     <width>271</width>
+     <height>41</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Inter</family>
+    </font>
    </property>
    <item>
     <property name="text">
@@ -114,11 +192,16 @@
   <widget class="QDateEdit" name="addTaskDeadlineBox">
    <property name="geometry">
     <rect>
-     <x>170</x>
-     <y>400</y>
-     <width>110</width>
-     <height>22</height>
+     <x>150</x>
+     <y>410</y>
+     <width>271</width>
+     <height>41</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Inter</family>
+    </font>
    </property>
    <property name="dateTime">
     <datetime>
@@ -134,11 +217,17 @@
   <widget class="QLabel" name="label_8">
    <property name="geometry">
     <rect>
-     <x>80</x>
-     <y>380</y>
+     <x>10</x>
+     <y>400</y>
      <width>121</width>
      <height>51</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Inter</family>
+     <pointsize>-1</pointsize>
+    </font>
    </property>
    <property name="styleSheet">
     <string notr="true">font-size: 20px;
@@ -151,11 +240,19 @@
   <widget class="QPushButton" name="addTaskSubmitBox">
    <property name="geometry">
     <rect>
-     <x>80</x>
-     <y>440</y>
-     <width>321</width>
-     <height>41</height>
+     <x>30</x>
+     <y>510</y>
+     <width>151</width>
+     <height>51</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Inter</family>
+     <pointsize>-1</pointsize>
+     <weight>62</weight>
+     <bold>true</bold>
+    </font>
    </property>
    <property name="text">
     <string>Submit</string>
@@ -164,15 +261,20 @@
   <widget class="QLabel" name="label_9">
    <property name="geometry">
     <rect>
-     <x>180</x>
+     <x>150</x>
      <y>380</y>
      <width>121</width>
      <height>20</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <family>Inter</family>
+     <pointsize>7</pointsize>
+    </font>
+   </property>
    <property name="styleSheet">
-    <string notr="true">font-size: 10px;
-</string>
+    <string notr="true"/>
    </property>
    <property name="text">
     <string>DD/MM/YYYY</string>
@@ -181,16 +283,79 @@
   <widget class="QPushButton" name="taskAdderReturn">
    <property name="geometry">
     <rect>
-     <x>80</x>
-     <y>500</y>
-     <width>93</width>
-     <height>28</height>
+     <x>270</x>
+     <y>510</y>
+     <width>151</width>
+     <height>51</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Inter</family>
+     <pointsize>-1</pointsize>
+     <weight>62</weight>
+     <bold>true</bold>
+    </font>
    </property>
    <property name="text">
     <string>Return</string>
    </property>
   </widget>
+  <widget class="QLabel" name="label_2">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>310</y>
+     <width>491</width>
+     <height>321</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Inter</family>
+    </font>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="pixmap">
+    <pixmap>—Pngtree—blue dot lines abstract background_15840593.png</pixmap>
+   </property>
+   <property name="scaledContents">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>110</x>
+     <y>-10</y>
+     <width>221</width>
+     <height>201</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="pixmap">
+    <pixmap>C:/Users/Admin/Desktop/CC15---ELISTA-main/UserInterface/logonew.png</pixmap>
+   </property>
+   <property name="scaledContents">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <zorder>label_2</zorder>
+  <zorder>addToLabel</zorder>
+  <zorder>taskNameField</zorder>
+  <zorder>label_5</zorder>
+  <zorder>label_7</zorder>
+  <zorder>addTaskPriorityBox</zorder>
+  <zorder>addTaskDeadlineBox</zorder>
+  <zorder>label_8</zorder>
+  <zorder>addTaskSubmitBox</zorder>
+  <zorder>label_9</zorder>
+  <zorder>taskAdderReturn</zorder>
+  <zorder>label</zorder>
  </widget>
  <resources/>
  <connections/>

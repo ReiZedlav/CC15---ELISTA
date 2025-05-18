@@ -5,6 +5,7 @@ from PyQt5.QtWidgets import QApplication,QWidget,QLabel,QPushButton,QVBoxLayout,
 from PyQt5.QtGui import QFont, QGuiApplication, QIcon
 from PyQt5.uic import loadUi
 from playsound import playsound
+from PyQt5.QtGui import QFontDatabase, QFont
 import bcrypt
 import datetime
 import re
@@ -13,6 +14,9 @@ import threading
 #DATABASE CONFIGURATION - IMPORTANT
 connection = mysql.connector.connect(host="localhost",database="cc15",user="root",password="root")
 cursor = connection.cursor(prepared=True)
+
+xUiSize = 1251
+yUiSize = 791
 
 class Soundtrack:
     @staticmethod
@@ -206,8 +210,8 @@ class ElistaCalendarOperation(QDialog):
             loggedIn = ElistaMainPage(self.session)
             widget.addWidget(loggedIn)
             widget.setCurrentIndex(widget.currentIndex() + 1)
-            widget.setFixedWidth(1400)
-            widget.setFixedHeight(800)
+            widget.setFixedWidth(xUiSize)
+            widget.setFixedHeight(yUiSize)
             
         elif pressed == self.thirdAuthenticatedButton:
             threading.Thread(target=Soundtrack.authenticatedButtonSFX).start()
@@ -250,8 +254,8 @@ class ElistaAddOperation(QDialog):
         loggedIn = ElistaMainPage(self.session)
         widget.addWidget(loggedIn)
         widget.setCurrentIndex(widget.currentIndex() + 1)
-        widget.setFixedWidth(1400)
-        widget.setFixedHeight(800)
+        widget.setFixedWidth(xUiSize)
+        widget.setFixedHeight(yUiSize)
 
     def addTask(self):
         print(self.typeName)
@@ -316,14 +320,14 @@ class ElistaEditOperation(QDialog):
                 loggedIn = ElistaMainPage(self.session)
                 widget.addWidget(loggedIn)
                 widget.setCurrentIndex(widget.currentIndex() + 1)
-                widget.setFixedWidth(1400)
-                widget.setFixedHeight(800)
+                widget.setFixedWidth(xUiSize)
+                widget.setFixedHeight(yUiSize)
             else:
                 calendar = ElistaCalendarOperation(self.session) 
                 widget.addWidget(calendar)
                 widget.setCurrentIndex(widget.currentIndex() + 1)
-                widget.setFixedWidth(1400)
-                widget.setFixedHeight(800)
+                widget.setFixedWidth(xUiSize)
+                widget.setFixedHeight(yUiSize)
 
 
 
@@ -333,14 +337,14 @@ class ElistaEditOperation(QDialog):
             loggedIn = ElistaMainPage(self.session)
             widget.addWidget(loggedIn)
             widget.setCurrentIndex(widget.currentIndex() + 1)
-            widget.setFixedWidth(1400)
-            widget.setFixedHeight(800)
+            widget.setFixedWidth(xUiSize)
+            widget.setFixedHeight(yUiSize)
         else:
             calendar = ElistaCalendarOperation(self.session) 
             widget.addWidget(calendar)
             widget.setCurrentIndex(widget.currentIndex() + 1)
-            widget.setFixedWidth(1400)
-            widget.setFixedHeight(800)
+            widget.setFixedWidth(xUiSize)
+            widget.setFixedHeight(yUiSize)
 
     def removeTask(self):
         threading.Thread(target=Soundtrack.updateClickSFX).start()
@@ -358,6 +362,7 @@ class ElistaMainPage(QDialog):
         super().__init__()
         self.session = session
         loadUi("UserInterface/elistaMain.ui",self)
+        self.setFixedSize(xUiSize, yUiSize)
         self.authenticatedNameLabel.setText(Database.getUsername(session))
         #create updating buttons
         self.firstAuthenticatedButton.clicked.connect(self.dynamicButton)
@@ -721,8 +726,8 @@ class ElistaMainPage(QDialog):
             loggedIn = ElistaMainPage(self.session)
             widget.addWidget(loggedIn)
             widget.setCurrentIndex(widget.currentIndex() + 1)
-            widget.setFixedWidth(1400)
-            widget.setFixedHeight(800)
+            widget.setFixedWidth(xUiSize)
+            widget.setFixedHeight(yUiSize)
             
 
         #DECOMISSIONED!!!!!!!
@@ -806,8 +811,8 @@ class Login(QDialog):
             loggedIn = ElistaMainPage(session)
             widget.addWidget(loggedIn)
             widget.setCurrentIndex(widget.currentIndex() + 1)
-            widget.setFixedWidth(1400)
-            widget.setFixedHeight(800)
+            widget.setFixedWidth(xUiSize)
+            widget.setFixedHeight(yUiSize)
         
        
 
@@ -815,6 +820,7 @@ class Signup(QDialog):
     def __init__(self):
         super(Signup,self).__init__()
         loadUi("UserInterface/create.ui",self)
+        self.setFixedSize(478, 700)
         self.signupSubmitButton.clicked.connect(self.createAccount)
         self.signupReturnButton.clicked.connect(self.goBackToLogin)
         self.SignupPasswordForm.setEchoMode(QtWidgets.QLineEdit.Password)

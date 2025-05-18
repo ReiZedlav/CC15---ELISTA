@@ -6,44 +6,110 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>480</width>
+    <width>478</width>
     <height>620</height>
    </rect>
+  </property>
+  <property name="font">
+   <font>
+    <family>Inter</family>
+    <pointsize>1</pointsize>
+   </font>
   </property>
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color: rgb(54, 54, 54);</string>
+   <string notr="true">/* Entire Dialog */
+QDialog {
+    background-color: #F9FAFB;
+    color: #111827; /* Dark gray, highly readable */
+}
+
+/* Labels */
+QLabel {
+    color: #1F2937; /* Stronger label color */
+}
+
+/* Text Fields */
+QLineEdit {
+    background-color: #FFFFFF;
+    border: 1px solid #D1D5DB;
+    border-radius: 6px;
+    padding: 6px 10px;
+    font-size: 14px;
+    color: #111827; /* Input text */
+}
+
+/* Primary Button */
+QPushButton {
+    background-color: #4F46E5;
+    border: none;
+    color: #FFFFFF;
+    border-radius: 6px;
+    padding: 8px 14px;
+    font-size: 14px;
+    font-weight: 500;
+}
+QPushButton:hover {
+    background-color: #4338CA;
+}
+QPushButton:pressed {
+    background-color: #3730A3;
+}
+
+/* Optional: Secondary Button */
+QPushButton#secondaryButton {
+    background-color: #E5E7EB;
+    color: #1F2937;
+}
+QPushButton#secondaryButton:hover {
+    background-color: #D1D5DB;
+}
+</string>
   </property>
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
-     <x>200</x>
-     <y>40</y>
-     <width>81</width>
-     <height>51</height>
+     <x>90</x>
+     <y>-10</y>
+     <width>291</width>
+     <height>281</height>
     </rect>
    </property>
    <property name="styleSheet">
     <string notr="true">color: rgb(225,225,225); font-size: 28px;</string>
    </property>
    <property name="text">
-    <string>Login</string>
+    <string/>
+   </property>
+   <property name="pixmap">
+    <pixmap>logonew.png</pixmap>
+   </property>
+   <property name="scaledContents">
+    <bool>true</bool>
    </property>
   </widget>
   <widget class="QLabel" name="loginusernameLabel">
    <property name="geometry">
     <rect>
-     <x>90</x>
-     <y>160</y>
+     <x>80</x>
+     <y>240</y>
      <width>111</width>
      <height>51</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <family>Inter</family>
+     <pointsize>12</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+     <kerning>true</kerning>
+    </font>
+   </property>
    <property name="styleSheet">
-    <string notr="true">color: rgb(225,225,225); font-size: 15px;
-</string>
+    <string notr="true"/>
    </property>
    <property name="text">
     <string>Username: </string>
@@ -52,14 +118,23 @@
   <widget class="QLabel" name="loginpasswordLabel">
    <property name="geometry">
     <rect>
-     <x>90</x>
-     <y>250</y>
+     <x>80</x>
+     <y>320</y>
      <width>111</width>
      <height>51</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <family>Inter</family>
+     <pointsize>12</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+     <kerning>true</kerning>
+    </font>
+   </property>
    <property name="styleSheet">
-    <string notr="true">color: rgb(225,225,225); font-size: 15px;</string>
+    <string notr="true"/>
    </property>
    <property name="text">
     <string>Password: </string>
@@ -69,13 +144,13 @@
    <property name="geometry">
     <rect>
      <x>240</x>
-     <y>160</y>
+     <y>240</y>
      <width>161</width>
      <height>51</height>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">font-size: 14px; color: white;</string>
+    <string notr="true"/>
    </property>
    <property name="text">
     <string/>
@@ -85,13 +160,13 @@
    <property name="geometry">
     <rect>
      <x>240</x>
-     <y>250</y>
+     <y>320</y>
      <width>161</width>
      <height>51</height>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">font-size: 14px; color: white;</string>
+    <string notr="true"/>
    </property>
    <property name="text">
     <string/>
@@ -101,29 +176,42 @@
    <property name="geometry">
     <rect>
      <x>80</x>
-     <y>330</y>
+     <y>390</y>
      <width>321</width>
      <height>51</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <family>Inter</family>
+     <pointsize>-1</pointsize>
+     <weight>62</weight>
+     <bold>true</bold>
+    </font>
+   </property>
    <property name="styleSheet">
-    <string notr="true">background-color: grey; font-size: 14px;</string>
+    <string notr="true"/>
    </property>
    <property name="text">
-    <string>Submit</string>
+    <string>Login</string>
    </property>
   </widget>
   <widget class="QLabel" name="passwordLabel_2">
    <property name="geometry">
     <rect>
      <x>80</x>
-     <y>470</y>
+     <y>480</y>
      <width>161</width>
      <height>51</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <family>Inter</family>
+    </font>
+   </property>
    <property name="styleSheet">
-    <string notr="true">color: rgb(225,225,225); font-size: 15px;</string>
+    <string notr="true"/>
    </property>
    <property name="text">
     <string>Dont have an account?</string>
@@ -132,19 +220,55 @@
   <widget class="QPushButton" name="createAccountButton">
    <property name="geometry">
     <rect>
-     <x>280</x>
-     <y>470</y>
-     <width>141</width>
-     <height>51</height>
+     <x>270</x>
+     <y>480</y>
+     <width>121</width>
+     <height>41</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <family>Inter</family>
+     <pointsize>-1</pointsize>
+     <weight>62</weight>
+     <bold>true</bold>
+    </font>
+   </property>
    <property name="styleSheet">
-    <string notr="true">background-color: grey; font-size: 14px;</string>
+    <string notr="true"/>
    </property>
    <property name="text">
     <string>Create One!</string>
    </property>
   </widget>
+  <widget class="QLabel" name="label_2">
+   <property name="geometry">
+    <rect>
+     <x>-70</x>
+     <y>140</y>
+     <width>621</width>
+     <height>341</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="pixmap">
+    <pixmap>bg.png</pixmap>
+   </property>
+   <property name="scaledContents">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <zorder>label_2</zorder>
+  <zorder>label</zorder>
+  <zorder>loginusernameLabel</zorder>
+  <zorder>loginpasswordLabel</zorder>
+  <zorder>LoginEmailForm</zorder>
+  <zorder>LoginPasswordForm</zorder>
+  <zorder>LoginSubmitButton</zorder>
+  <zorder>passwordLabel_2</zorder>
+  <zorder>createAccountButton</zorder>
  </widget>
  <resources/>
  <connections/>
