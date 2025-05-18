@@ -65,7 +65,7 @@ QTableWidget {
    <property name="geometry">
     <rect>
      <x>20</x>
-     <y>190</y>
+     <y>260</y>
      <width>141</width>
      <height>181</height>
     </rect>
@@ -98,8 +98,8 @@ QTableWidget {
    </property>
    <property name="iconSize">
     <size>
-     <width>256</width>
-     <height>256</height>
+     <width>128</width>
+     <height>128</height>
     </size>
    </property>
   </widget>
@@ -107,9 +107,9 @@ QTableWidget {
    <property name="geometry">
     <rect>
      <x>20</x>
-     <y>410</y>
+     <y>440</y>
      <width>141</width>
-     <height>151</height>
+     <height>110</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -128,12 +128,12 @@ QTableWidget {
    </property>
    <property name="icon">
     <iconset>
-     <normaloff>../Assets/calendar_Icon (2).png</normaloff>../Assets/calendar_Icon (2).png</iconset>
+     <normaloff>../Assets/calendar_Icon.png</normaloff>../Assets/calendar_Icon.png</iconset>
    </property>
    <property name="iconSize">
     <size>
-     <width>180</width>
-     <height>220</height>
+     <width>128</width>
+     <height>128</height>
     </size>
    </property>
   </widget>
@@ -156,7 +156,7 @@ QTableWidget {
    </property>
    <property name="styleSheet">
     <string notr="true">QPushButton#fourthAuthenticatedButton {
-    background-color: #1F2937;  /* Very dark gray */
+     background-color: #4F46E5;  /* Very dark gray */
     color: white;
     border-radius: 6px;
     padding: 6px 12px;
@@ -176,9 +176,12 @@ QPushButton#fourthAuthenticatedButton:hover {
     <rect>
      <x>170</x>
      <y>-10</y>
-     <width>21</width>
-     <height>821</height>
+     <width>3</width>
+     <height>791</height>
     </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border: 1px dotted #4F46E5;</string>
    </property>
    <property name="orientation">
     <enum>Qt::Vertical</enum>
@@ -188,7 +191,7 @@ QPushButton#fourthAuthenticatedButton:hover {
    <property name="geometry">
     <rect>
      <x>30</x>
-     <y>160</y>
+     <y>150</y>
      <width>111</width>
      <height>20</height>
     </rect>
@@ -200,7 +203,7 @@ QPushButton#fourthAuthenticatedButton:hover {
   <widget class="QLabel" name="label_4">
    <property name="geometry">
     <rect>
-     <x>250</x>
+     <x>270</x>
      <y>30</y>
      <width>161</width>
      <height>41</height>
@@ -215,7 +218,9 @@ QPushButton#fourthAuthenticatedButton:hover {
     </font>
    </property>
    <property name="styleSheet">
-    <string notr="true">font-size: 30px;</string>
+    <string notr="true">font-size: 30px;
+color: #4F46E5;
+</string>
    </property>
    <property name="text">
     <string>PERSONAL</string>
@@ -224,7 +229,7 @@ QPushButton#fourthAuthenticatedButton:hover {
   <widget class="QLabel" name="label_5">
    <property name="geometry">
     <rect>
-     <x>550</x>
+     <x>580</x>
      <y>30</y>
      <width>161</width>
      <height>41</height>
@@ -239,7 +244,9 @@ QPushButton#fourthAuthenticatedButton:hover {
     </font>
    </property>
    <property name="styleSheet">
-    <string notr="true">font-size: 30px;</string>
+    <string notr="true">font-size: 30px;
+color: #4F46E5;
+</string>
    </property>
    <property name="text">
     <string>ACADEMIC</string>
@@ -263,7 +270,9 @@ QPushButton#fourthAuthenticatedButton:hover {
     </font>
    </property>
    <property name="styleSheet">
-    <string notr="true">font-size: 30px;</string>
+    <string notr="true">font-size: 30px;
+color: #4F46E5;
+</string>
    </property>
    <property name="text">
     <string>MISC...</string>
@@ -272,14 +281,17 @@ QPushButton#fourthAuthenticatedButton:hover {
   <widget class="QTableWidget" name="personalTable">
    <property name="geometry">
     <rect>
-     <x>200</x>
+     <x>220</x>
      <y>230</y>
      <width>251</width>
-     <height>411</height>
+     <height>451</height>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">QScrollBar:vertical, QScrollBar:horizontal {
+    <string notr="true">QTableWidget{
+	border: 2px solid #4F46E5;
+}
+QScrollBar:vertical, QScrollBar:horizontal {
         background: transparent;
         width: 0px;
         height: 0px;
@@ -293,20 +305,26 @@ QToolTip {
     padding: 6px;
     border-radius: 4px;
 }
+
 </string>
    </property>
   </widget>
   <widget class="QTableWidget" name="academicTable">
    <property name="geometry">
     <rect>
-     <x>510</x>
+     <x>530</x>
      <y>230</y>
-     <width>261</width>
-     <height>411</height>
+     <width>251</width>
+     <height>451</height>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">QScrollBar:vertical, QScrollBar:horizontal {
+    <string notr="true">
+QTableWidget{
+	border: 2px solid #4F46E5;
+}
+
+QScrollBar:vertical, QScrollBar:horizontal {
         background: transparent;
         width: 0px;
         height: 0px;
@@ -316,14 +334,25 @@ QToolTip {
   <widget class="QTableWidget" name="miscTable">
    <property name="geometry">
     <rect>
-     <x>820</x>
+     <x>840</x>
      <y>230</y>
-     <width>251</width>
-     <height>411</height>
+     <width>261</width>
+     <height>451</height>
     </rect>
    </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
    <property name="styleSheet">
-    <string notr="true">QScrollBar:vertical, QScrollBar:horizontal {
+    <string notr="true">
+QTableWidget{
+	border: 2px solid #4F46E5;
+}
+
+QScrollBar:vertical, QScrollBar:horizontal {
         background: transparent;
         width: 0px;
         height: 0px;
@@ -333,7 +362,7 @@ QToolTip {
   <widget class="QComboBox" name="personalBox">
    <property name="geometry">
     <rect>
-     <x>250</x>
+     <x>270</x>
      <y>130</y>
      <width>151</width>
      <height>31</height>
@@ -393,7 +422,7 @@ QComboBox::down-arrow {
   <widget class="QComboBox" name="academicBox">
    <property name="geometry">
     <rect>
-     <x>560</x>
+     <x>580</x>
      <y>130</y>
      <width>151</width>
      <height>31</height>
@@ -448,7 +477,7 @@ QComboBox::down-arrow {
   <widget class="QComboBox" name="miscBox">
    <property name="geometry">
     <rect>
-     <x>870</x>
+     <x>890</x>
      <y>130</y>
      <width>151</width>
      <height>31</height>
@@ -503,7 +532,7 @@ QComboBox::down-arrow {
   <widget class="QPushButton" name="personalizeAuthenticatedButton">
    <property name="geometry">
     <rect>
-     <x>250</x>
+     <x>270</x>
      <y>170</y>
      <width>151</width>
      <height>41</height>
@@ -535,7 +564,7 @@ QComboBox::down-arrow {
   <widget class="QPushButton" name="AssignAuthenticatedButton">
    <property name="geometry">
     <rect>
-     <x>560</x>
+     <x>580</x>
      <y>170</y>
      <width>151</width>
      <height>41</height>
@@ -567,7 +596,7 @@ QComboBox::down-arrow {
   <widget class="QPushButton" name="MiscAuthenticatedButton">
    <property name="geometry">
     <rect>
-     <x>870</x>
+     <x>890</x>
      <y>170</y>
      <width>151</width>
      <height>41</height>
@@ -599,7 +628,7 @@ QComboBox::down-arrow {
   <widget class="QLineEdit" name="personalSearchBox">
    <property name="geometry">
     <rect>
-     <x>250</x>
+     <x>270</x>
      <y>90</y>
      <width>151</width>
      <height>31</height>
@@ -621,7 +650,7 @@ QComboBox::down-arrow {
   <widget class="QLineEdit" name="academicSearchBox">
    <property name="geometry">
     <rect>
-     <x>560</x>
+     <x>580</x>
      <y>90</y>
      <width>151</width>
      <height>31</height>
@@ -643,7 +672,7 @@ QComboBox::down-arrow {
   <widget class="QLineEdit" name="miscSearchBox">
    <property name="geometry">
     <rect>
-     <x>870</x>
+     <x>890</x>
      <y>90</y>
      <width>151</width>
      <height>31</height>
@@ -685,16 +714,15 @@ QComboBox::down-arrow {
    <property name="geometry">
     <rect>
      <x>30</x>
-     <y>290</y>
-     <width>201</width>
-     <height>81</height>
+     <y>210</y>
+     <width>151</width>
+     <height>31</height>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">authenticatedNameLabel {
-color: #ffffff;
-}
-</string>
+    <string notr="true">color: #4F46E5;
+font-size: 25px;
+font: bold;</string>
    </property>
    <property name="text">
     <string/>
@@ -713,11 +741,11 @@ color: #ffffff;
     <string/>
    </property>
   </widget>
-  <widget class="QLabel" name="label_3">
+  <widget class="QLabel" name="label_7">
    <property name="geometry">
     <rect>
-     <x>-100</x>
-     <y>0</y>
+     <x>170</x>
+     <y>-50</y>
      <width>1251</width>
      <height>791</height>
     </rect>
@@ -732,16 +760,73 @@ color: #ffffff;
     <bool>true</bool>
    </property>
   </widget>
-  <zorder>label_3</zorder>
+  <widget class="QLabel" name="sideBackground">
+   <property name="geometry">
+    <rect>
+     <x>-1020</x>
+     <y>-90</y>
+     <width>1191</width>
+     <height>791</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="pixmap">
+    <pixmap>../Assets/sideBackground.jpg</pixmap>
+   </property>
+   <property name="scaledContents">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QLabel" name="mainBackground">
+   <property name="geometry">
+    <rect>
+     <x>180</x>
+     <y>-271</y>
+     <width>1251</width>
+     <height>971</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="pixmap">
+    <pixmap>../Assets/mainBackground.jpg</pixmap>
+   </property>
+   <property name="scaledContents">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_3">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>170</y>
+     <width>121</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: #4F46E5;
+font-size: 20px;
+font: italic;</string>
+   </property>
+   <property name="text">
+    <string>Welcome,</string>
+   </property>
+  </widget>
+  <zorder>mainBackground</zorder>
+  <zorder>sideBackground</zorder>
+  <zorder>firstAuthenticatedButton</zorder>
+  <zorder>label_7</zorder>
   <zorder>label</zorder>
   <zorder>authenticatedNameLabel</zorder>
-  <zorder>firstAuthenticatedButton</zorder>
   <zorder>thirdAuthenticatedButton</zorder>
   <zorder>fourthAuthenticatedButton</zorder>
   <zorder>line</zorder>
   <zorder>line_2</zorder>
   <zorder>label_4</zorder>
-  <zorder>label_5</zorder>
   <zorder>label_6</zorder>
   <zorder>personalTable</zorder>
   <zorder>academicTable</zorder>
@@ -756,6 +841,8 @@ color: #ffffff;
   <zorder>academicSearchBox</zorder>
   <zorder>miscSearchBox</zorder>
   <zorder>label_2</zorder>
+  <zorder>label_5</zorder>
+  <zorder>label_3</zorder>
  </widget>
  <resources/>
  <connections/>

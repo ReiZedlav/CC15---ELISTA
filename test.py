@@ -15,8 +15,8 @@ import threading
 connection = mysql.connector.connect(host="localhost",database="cc15",user="root",password="root")
 cursor = connection.cursor(prepared=True)
 
-xUiSize = 1251
-yUiSize = 791
+xUiSize = 1141
+yUiSize = 692
 
 class Soundtrack:
     @staticmethod
@@ -395,17 +395,20 @@ class ElistaMainPage(QDialog):
         self.personalTable.setEditTriggers(QTableWidget.NoEditTriggers)
         self.personalTable.setSelectionBehavior(QTableWidget.SelectRows)
         self.personalTable.verticalHeader().setVisible(False)
+        self.personalTable.setColumnHidden(2, True)
         self.personalTable.setColumnHidden(3, True)
 
 
         self.academicTable.setEditTriggers(QTableWidget.NoEditTriggers)
         self.academicTable.setSelectionBehavior(QTableWidget.SelectRows)
         self.academicTable.verticalHeader().setVisible(False)
+        self.academicTable.setColumnHidden(2, True)
         self.academicTable.setColumnHidden(3, True)
 
         self.miscTable.setEditTriggers(QTableWidget.NoEditTriggers)
         self.miscTable.setSelectionBehavior(QTableWidget.SelectRows)
         self.miscTable.verticalHeader().setVisible(False)
+        self.miscTable.setColumnHidden(2, True)
         self.miscTable.setColumnHidden(3, True)
 
         #CREATE CLICK TABLE ROW EVENT
