@@ -484,8 +484,8 @@ class ElistaMainPage(QDialog):
         #(self,session,taskId)
         
         edit = ElistaEditOperation(self.session,row_data[3],"Personal",row_data[1],row_data[2],True) 
-        widget.setFixedWidth(480)
-        widget.setFixedHeight(600)
+        widget.setFixedWidth(448)
+        widget.setFixedHeight(601)
         widget.addWidget(edit)
         widget.setCurrentIndex(widget.currentIndex() + 1) 
 
@@ -499,8 +499,8 @@ class ElistaMainPage(QDialog):
             row_data.append(item.text() if item else "")
         
         edit = ElistaEditOperation(self.session,row_data[3],"Academic",row_data[1],row_data[2],True) 
-        widget.setFixedWidth(480)
-        widget.setFixedHeight(600)
+        widget.setFixedWidth(448)
+        widget.setFixedHeight(601)
         widget.addWidget(edit)
         widget.setCurrentIndex(widget.currentIndex() + 1) 
 
@@ -514,8 +514,8 @@ class ElistaMainPage(QDialog):
             row_data.append(item.text() if item else "")
         
         edit = ElistaEditOperation(self.session,row_data[3],"Miscellaneous",row_data[1],row_data[2],True) 
-        widget.setFixedWidth(480)
-        widget.setFixedHeight(600)
+        widget.setFixedWidth(448)
+        widget.setFixedHeight(601)
         widget.addWidget(edit)
         widget.setCurrentIndex(widget.currentIndex() + 1) 
 
@@ -888,6 +888,9 @@ class Signup(QDialog):
                                         goBack = Login()
                                         widget.addWidget(goBack)
                                         widget.setCurrentIndex(widget.currentIndex()+1)
+            else:
+                self.feedbackLabel.setVisible(True)
+                self.feedbackLabel.setText("Password does not match! Please type carefully!")
         else:
             Utilities.mismatchedPassword()
 

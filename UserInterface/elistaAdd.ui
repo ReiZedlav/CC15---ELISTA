@@ -64,9 +64,9 @@ QPushButton#secondaryButton:hover {
   <widget class="QLabel" name="addToLabel">
    <property name="geometry">
     <rect>
-     <x>100</x>
-     <y>130</y>
-     <width>251</width>
+     <x>90</x>
+     <y>120</y>
+     <width>331</width>
      <height>101</height>
     </rect>
    </property>
@@ -79,7 +79,9 @@ QPushButton#secondaryButton:hover {
     </font>
    </property>
    <property name="styleSheet">
-    <string notr="true">font-size: 30px;</string>
+    <string notr="true">color: #4F46E5;
+font-size: 30px;
+</string>
    </property>
    <property name="text">
     <string>ADD TO [TABLE]</string>
@@ -88,9 +90,9 @@ QPushButton#secondaryButton:hover {
   <widget class="QTextEdit" name="taskNameField">
    <property name="geometry">
     <rect>
-     <x>150</x>
+     <x>180</x>
      <y>220</y>
-     <width>271</width>
+     <width>221</width>
      <height>41</height>
     </rect>
    </property>
@@ -100,15 +102,15 @@ QPushButton#secondaryButton:hover {
     </font>
    </property>
    <property name="placeholderText">
-    <string/>
+    <string>Enter taskname here!</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_5">
    <property name="geometry">
     <rect>
-     <x>10</x>
+     <x>50</x>
      <y>210</y>
-     <width>131</width>
+     <width>121</width>
      <height>61</height>
     </rect>
    </property>
@@ -116,10 +118,15 @@ QPushButton#secondaryButton:hover {
     <font>
      <family>Inter</family>
      <pointsize>-1</pointsize>
+     <weight>75</weight>
+     <italic>false</italic>
+     <bold>true</bold>
     </font>
    </property>
    <property name="styleSheet">
-    <string notr="true">font-size: 20px;
+    <string notr="true">color: #4F46E5;
+font-size: 20px;
+font: bold;
 </string>
    </property>
    <property name="text">
@@ -129,8 +136,8 @@ QPushButton#secondaryButton:hover {
   <widget class="QLabel" name="label_7">
    <property name="geometry">
     <rect>
-     <x>10</x>
-     <y>310</y>
+     <x>50</x>
+     <y>280</y>
      <width>91</width>
      <height>51</height>
     </rect>
@@ -139,10 +146,15 @@ QPushButton#secondaryButton:hover {
     <font>
      <family>Inter</family>
      <pointsize>-1</pointsize>
+     <weight>75</weight>
+     <italic>false</italic>
+     <bold>true</bold>
     </font>
    </property>
    <property name="styleSheet">
-    <string notr="true">font-size: 20px;
+    <string notr="true">color: #4F46E5;
+font-size: 20px;
+font: bold;
 </string>
    </property>
    <property name="text">
@@ -152,9 +164,9 @@ QPushButton#secondaryButton:hover {
   <widget class="QComboBox" name="addTaskPriorityBox">
    <property name="geometry">
     <rect>
-     <x>150</x>
-     <y>310</y>
-     <width>271</width>
+     <x>180</x>
+     <y>290</y>
+     <width>221</width>
      <height>41</height>
     </rect>
    </property>
@@ -192,9 +204,9 @@ QPushButton#secondaryButton:hover {
   <widget class="QDateEdit" name="addTaskDeadlineBox">
    <property name="geometry">
     <rect>
-     <x>150</x>
-     <y>410</y>
-     <width>271</width>
+     <x>180</x>
+     <y>360</y>
+     <width>221</width>
      <height>41</height>
     </rect>
    </property>
@@ -217,8 +229,8 @@ QPushButton#secondaryButton:hover {
   <widget class="QLabel" name="label_8">
    <property name="geometry">
     <rect>
-     <x>10</x>
-     <y>400</y>
+     <x>50</x>
+     <y>350</y>
      <width>121</width>
      <height>51</height>
     </rect>
@@ -227,10 +239,15 @@ QPushButton#secondaryButton:hover {
     <font>
      <family>Inter</family>
      <pointsize>-1</pointsize>
+     <weight>75</weight>
+     <italic>false</italic>
+     <bold>true</bold>
     </font>
    </property>
    <property name="styleSheet">
-    <string notr="true">font-size: 20px;
+    <string notr="true">color: #4F46E5;
+font-size: 20px;
+font: bold;
 </string>
    </property>
    <property name="text">
@@ -240,9 +257,9 @@ QPushButton#secondaryButton:hover {
   <widget class="QPushButton" name="addTaskSubmitBox">
    <property name="geometry">
     <rect>
-     <x>30</x>
-     <y>510</y>
-     <width>151</width>
+     <x>40</x>
+     <y>450</y>
+     <width>381</width>
      <height>51</height>
     </rect>
    </property>
@@ -261,8 +278,8 @@ QPushButton#secondaryButton:hover {
   <widget class="QLabel" name="label_9">
    <property name="geometry">
     <rect>
-     <x>150</x>
-     <y>380</y>
+     <x>180</x>
+     <y>410</y>
      <width>121</width>
      <height>20</height>
     </rect>
@@ -271,10 +288,15 @@ QPushButton#secondaryButton:hover {
     <font>
      <family>Inter</family>
      <pointsize>7</pointsize>
+     <weight>75</weight>
+     <italic>false</italic>
+     <bold>true</bold>
     </font>
    </property>
    <property name="styleSheet">
-    <string notr="true"/>
+    <string notr="true">color: #4F46E5;
+font: bold;
+</string>
    </property>
    <property name="text">
     <string>DD/MM/YYYY</string>
@@ -283,8 +305,8 @@ QPushButton#secondaryButton:hover {
   <widget class="QPushButton" name="taskAdderReturn">
    <property name="geometry">
     <rect>
-     <x>270</x>
-     <y>510</y>
+     <x>40</x>
+     <y>520</y>
      <width>151</width>
      <height>51</height>
     </rect>
@@ -338,24 +360,64 @@ QPushButton#secondaryButton:hover {
     <string/>
    </property>
    <property name="pixmap">
-    <pixmap>C:/Users/Admin/Desktop/CC15---ELISTA-main/UserInterface/logonew.png</pixmap>
+    <pixmap>logonew.png</pixmap>
    </property>
    <property name="scaledContents">
     <bool>true</bool>
    </property>
   </widget>
+  <widget class="QLabel" name="label_3">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>90</y>
+     <width>521</width>
+     <height>551</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="pixmap">
+    <pixmap>bg.png</pixmap>
+   </property>
+   <property name="scaledContents">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_4">
+   <property name="geometry">
+    <rect>
+     <x>-73</x>
+     <y>-10</y>
+     <width>571</width>
+     <height>620</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="pixmap">
+    <pixmap>../Assets/mainBackground.jpg</pixmap>
+   </property>
+   <property name="scaledContents">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <zorder>label_4</zorder>
+  <zorder>label_3</zorder>
   <zorder>label_2</zorder>
   <zorder>addToLabel</zorder>
-  <zorder>taskNameField</zorder>
-  <zorder>label_5</zorder>
-  <zorder>label_7</zorder>
-  <zorder>addTaskPriorityBox</zorder>
-  <zorder>addTaskDeadlineBox</zorder>
-  <zorder>label_8</zorder>
-  <zorder>addTaskSubmitBox</zorder>
-  <zorder>label_9</zorder>
-  <zorder>taskAdderReturn</zorder>
   <zorder>label</zorder>
+  <zorder>label_5</zorder>
+  <zorder>taskNameField</zorder>
+  <zorder>addTaskPriorityBox</zorder>
+  <zorder>label_7</zorder>
+  <zorder>label_8</zorder>
+  <zorder>addTaskDeadlineBox</zorder>
+  <zorder>label_9</zorder>
+  <zorder>addTaskSubmitBox</zorder>
+  <zorder>taskAdderReturn</zorder>
  </widget>
  <resources/>
  <connections/>
