@@ -638,7 +638,13 @@ QComboBox::down-arrow {
     <font>
      <family>Inter</family>
      <pointsize>-1</pointsize>
+     <weight>75</weight>
+     <italic>false</italic>
+     <bold>true</bold>
     </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">font: bold;</string>
    </property>
    <property name="text">
     <string/>
@@ -660,7 +666,13 @@ QComboBox::down-arrow {
     <font>
      <family>Inter</family>
      <pointsize>-1</pointsize>
+     <weight>75</weight>
+     <italic>false</italic>
+     <bold>true</bold>
     </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">font: bold;</string>
    </property>
    <property name="text">
     <string/>
@@ -682,7 +694,13 @@ QComboBox::down-arrow {
     <font>
      <family>Inter</family>
      <pointsize>-1</pointsize>
+     <weight>75</weight>
+     <italic>false</italic>
+     <bold>true</bold>
     </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">font: bold;</string>
    </property>
    <property name="text">
     <string/>

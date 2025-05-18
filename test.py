@@ -78,6 +78,8 @@ class ElistaCalendarOperation(QDialog):
         self.calendarTable.cellClicked.connect(self.tableSFX)
 
         self.calendarTable.verticalHeader().setVisible(False)
+        self.calendarTable.setColumnHidden(2, True)
+        self.calendarTable.setColumnHidden(3, True)
         self.calendarTable.setSelectionBehavior(QTableWidget.SelectRows)
         self.calendarTable.setSelectionMode(QTableWidget.SingleSelection)
 
