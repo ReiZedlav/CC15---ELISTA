@@ -99,7 +99,23 @@ font-size: 30px;
    <property name="font">
     <font>
      <family>Inter</family>
+     <pointsize>-1</pointsize>
+     <weight>75</weight>
+     <italic>false</italic>
+     <bold>true</bold>
     </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QTextEdit {
+    border-radius: 8px;  /* Rounded corners */
+    font-size: 15px;  /* Font size */
+    padding: 8px;  /* Padding inside the text area */
+    border: 1px solid #ccc;  /* Optional: Add a border around the QTextEdit */
+    background-color: #fff;  /* Optional: Background color */
+    overflow: hidden;  /* Hides the scrollbars */
+	font: bold;
+}
+</string>
    </property>
    <property name="placeholderText">
     <string>Enter taskname here!</string>
@@ -173,7 +189,36 @@ font: bold;
    <property name="font">
     <font>
      <family>Inter</family>
+     <pointsize>-1</pointsize>
+     <weight>75</weight>
+     <italic>false</italic>
+     <bold>true</bold>
     </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QComboBox {
+    border: 1px solid #D1D5DB;
+    border-radius: 8px;
+    padding: 6px 12px;
+    background-color: #FFFFFF;
+    font-family: 'Inter';
+    font-size: 13px;
+    color: #111827;
+	font: bold;
+}
+
+QComboBox::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: top right;
+    width: 24px;
+    border-left: 1px solid #D1D5DB;
+}
+
+QComboBox::down-arrow {
+    image: url(&quot;C:/Users/Admin/Desktop/CC15---ELISTA-main/UserInterface/arrow-down.png&quot;);
+    width: 12px;
+    height: 12px;
+}</string>
    </property>
    <item>
     <property name="text">
@@ -213,7 +258,16 @@ font: bold;
    <property name="font">
     <font>
      <family>Inter</family>
+     <pointsize>-1</pointsize>
     </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QDateEdit {
+    font-size: 15px; /* Set font size */
+    border-radius: 8px; /* Apply rounded borders */
+    padding: 2px; /* Add padding to ensure the text inside doesn’t touch the borders */
+    border: 1px solid #ccc; /* Optional: Add a border around the widget */
+}</string>
    </property>
    <property name="dateTime">
     <datetime>

@@ -1,11 +1,11 @@
 import mysql.connector
 from PyQt5.QtCore import Qt, QDate, QTimer
 from PyQt5 import QtWidgets
-from PyQt5.QtWidgets import QApplication,QWidget,QLabel,QPushButton,QVBoxLayout,QHBoxLayout,QLineEdit,QGridLayout,QMainWindow,QMessageBox,QTextEdit, QDialog,QTableWidget, QHeaderView
+from PyQt5.QtWidgets import QApplication,QWidget,QLabel,QPushButton,QVBoxLayout,QHBoxLayout,QLineEdit,QGridLayout,QMainWindow,QMessageBox,QTextEdit, QDialog,QTableWidget, QHeaderView, QGraphicsDropShadowEffect
 from PyQt5.QtGui import QFont, QGuiApplication, QIcon
 from PyQt5.uic import loadUi
 from playsound import playsound
-from PyQt5.QtGui import QFontDatabase, QFont
+from PyQt5.QtGui import QFontDatabase, QFont, QColor
 import bcrypt
 import datetime
 import re
@@ -15,8 +15,21 @@ import threading
 connection = mysql.connector.connect(host="localhost",database="cc15",user="root",password="root")
 cursor = connection.cursor(prepared=True)
 
+#Design configurations
+
 xUiSize = 1141
 yUiSize = 692
+
+class Effects:
+    @staticmethod
+    def setShadowPurple(widget, color="#4F46E5", blur_radius=50, x_offset=0, y_offset=0):
+        shadow = QGraphicsDropShadowEffect()
+        shadow.setColor(QColor(color))
+        shadow.setBlurRadius(blur_radius)
+        shadow.setOffset(x_offset, y_offset)
+        widget.setGraphicsEffect(shadow)
+    
+#Music configurations
 
 class Soundtrack:
     @staticmethod
@@ -63,6 +76,10 @@ class ElistaCalendarOperation(QDialog):
         self.session = session
         loadUi("UserInterface/elistaCalendar.ui",self)
         self.authenticatedNameLabel.setText(Database.getUsername(session))
+
+        Effects.setShadowPurple(self.label)
+
+
         #create updating buttons
         self.firstAuthenticatedButton.clicked.connect(self.dynamicButton)
         #self.secondAuthenticatedButton.clicked.connect(self.dynamicButton) DECOMISSIONED
@@ -78,6 +95,9 @@ class ElistaCalendarOperation(QDialog):
         self.calendarTable.cellClicked.connect(self.tableSFX)
 
         self.calendarTable.verticalHeader().setVisible(False)
+        Effects.setShadowPurple(self.calendarTable)
+        self.calendarTable.setStyleSheet("""QTableWidget::item:selected {background-color: #4F46E5;color: white;}""")
+        self.calendarTable.horizontalHeader().setStyleSheet("""QHeaderView::section {background-color: #add8e6;color: #4F46E5;font-weight: bold;border: none}""")
         self.calendarTable.setColumnHidden(2, True)
         self.calendarTable.setColumnHidden(3, True)
         self.calendarTable.setSelectionBehavior(QTableWidget.SelectRows)
@@ -234,6 +254,8 @@ class ElistaAddOperation(QDialog):
         self.typeName = typeName
         loadUi("UserInterface/elistaAdd.ui",self)
 
+        Effects.setShadowPurple(self.label)
+
         #task adder functionality here
         self.addTaskSubmitBox.clicked.connect(self.addTask)
         self.taskAdderReturn.clicked.connect(self.returnToMainPage)
@@ -274,9 +296,11 @@ class ElistaAddOperation(QDialog):
         if taskName == "" or taskName.isspace():
             Utilities.emptyFields()
         else:
-            Database.sanitizedInsertTask(taskOwner,taskPriority,taskType,taskStatus,taskName,taskDeadline)
-
-            Utilities.successfulAction()
+            try:
+                Database.sanitizedInsertTask(taskOwner,taskPriority,taskType,taskStatus,taskName,taskDeadline)
+                Utilities.successfulAction()
+            except:
+                Utilities.tooLong()
 
 class ElistaEditOperation(QDialog):
     def __init__(self,session,taskId,typeName,priority,status,isFromMain):
@@ -292,6 +316,8 @@ class ElistaEditOperation(QDialog):
         self.reviseTypeBox.setCurrentText(self.typeName)
         self.revisePriorityBox.setCurrentText(self.priority)
         self.reviseStatusBox.setCurrentText(self.status)
+
+        Effects.setShadowPurple(self.label_3)
 
         self.reviseTaskId.setText(str(taskId))  
         self.reviseNameBox.setText(Database.getSanitizedTaskName(self.taskId))
@@ -313,10 +339,13 @@ class ElistaEditOperation(QDialog):
         if updateName == "" or updateName.isspace():
             Utilities.emptyFields()
         else:
+            
+            try:
+                Database.sanitizedUpdateTask(updateName,updatePriority,updateStatus,updateType,updateDeadline,self.taskId)
 
-            Database.sanitizedUpdateTask(updateName,updatePriority,updateStatus,updateType,updateDeadline,self.taskId)
-
-            Utilities.successfulAction()
+                Utilities.successfulAction()
+            except:
+                Utilities.tooLong()
 
             if self.isFromMain:
                 loggedIn = ElistaMainPage(self.session)
@@ -368,7 +397,7 @@ class ElistaMainPage(QDialog):
         self.authenticatedNameLabel.setText(Database.getUsername(session))
         #create updating buttons
         self.firstAuthenticatedButton.clicked.connect(self.dynamicButton)
-        
+        Effects.setShadowPurple(self.label)
 
 
         #---------------------------------------------------------------------
@@ -397,6 +426,9 @@ class ElistaMainPage(QDialog):
         self.personalTable.setEditTriggers(QTableWidget.NoEditTriggers)
         self.personalTable.setSelectionBehavior(QTableWidget.SelectRows)
         self.personalTable.verticalHeader().setVisible(False)
+        Effects.setShadowPurple(self.personalTable)
+        self.personalTable.setStyleSheet("""QTableWidget::item:selected {background-color: #4F46E5;color: white;}""")
+        self.personalTable.horizontalHeader().setStyleSheet("""QHeaderView::section {background-color: #add8e6;color: #4F46E5;font-weight: bold;border: none}""")
         self.personalTable.setColumnHidden(2, True)
         self.personalTable.setColumnHidden(3, True)
 
@@ -404,12 +436,18 @@ class ElistaMainPage(QDialog):
         self.academicTable.setEditTriggers(QTableWidget.NoEditTriggers)
         self.academicTable.setSelectionBehavior(QTableWidget.SelectRows)
         self.academicTable.verticalHeader().setVisible(False)
+        Effects.setShadowPurple(self.academicTable)
+        self.academicTable.setStyleSheet("""QTableWidget::item:selected {background-color: #4F46E5;color: white;}""")
+        self.academicTable.horizontalHeader().setStyleSheet("""QHeaderView::section {background-color: #add8e6;color: #4F46E5;font-weight: bold;border: none}""")
         self.academicTable.setColumnHidden(2, True)
         self.academicTable.setColumnHidden(3, True)
 
         self.miscTable.setEditTriggers(QTableWidget.NoEditTriggers)
         self.miscTable.setSelectionBehavior(QTableWidget.SelectRows)
         self.miscTable.verticalHeader().setVisible(False)
+        Effects.setShadowPurple(self.miscTable)
+        self.miscTable.setStyleSheet("""QTableWidget::item:selected {background-color: #4F46E5;color: white;}""")
+        self.miscTable.horizontalHeader().setStyleSheet("""QHeaderView::section {background-color: #add8e6;color: #4F46E5;font-weight: bold;border: none}""")
         self.miscTable.setColumnHidden(2, True)
         self.miscTable.setColumnHidden(3, True)
 
@@ -789,6 +827,8 @@ class Login(QDialog):
         self.LoginPasswordForm.setEchoMode(QtWidgets.QLineEdit.Password)
         self.createAccountButton.clicked.connect(self.visitSignupPage)
 
+        Effects.setShadowPurple(self.label)
+
         #SET FAILS 
         Database.sanitizedEnforceDeadlines(str(datetime.datetime.today()).split()[0])
 
@@ -830,6 +870,8 @@ class Signup(QDialog):
         self.signupReturnButton.clicked.connect(self.goBackToLogin)
         self.SignupPasswordForm.setEchoMode(QtWidgets.QLineEdit.Password)
         self.SignupConfirmPasswordForm.setEchoMode(QtWidgets.QLineEdit.Password)
+
+        Effects.setShadowPurple(self.label_2)
 
         self.feedbackLabel.setVisible(False)
 
@@ -1198,6 +1240,16 @@ class Utilities:
         msg.setIcon(QMessageBox.Warning)
         msg.setWindowTitle("Blank Fields")
         msg.setText("Error: Taskname must not be empty!")
+        msg.setInformativeText("Try Again")
+        msg.setStandardButtons(QMessageBox.Ok)
+        msg.exec_()
+    
+    @staticmethod
+    def tooLong():
+        msg = QMessageBox()
+        msg.setIcon(QMessageBox.Warning)
+        msg.setWindowTitle("Data too long!")
+        msg.setText("Error: Keep data short!!")
         msg.setInformativeText("Try Again")
         msg.setStandardButtons(QMessageBox.Ok)
         msg.exec_()

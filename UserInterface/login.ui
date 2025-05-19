@@ -109,7 +109,7 @@ QPushButton#secondaryButton:hover {
     </font>
    </property>
    <property name="styleSheet">
-    <string notr="true"/>
+    <string notr="true">color: #4F46E5</string>
    </property>
    <property name="text">
     <string>Username: </string>
@@ -134,7 +134,7 @@ QPushButton#secondaryButton:hover {
     </font>
    </property>
    <property name="styleSheet">
-    <string notr="true"/>
+    <string notr="true">color: #4F46E5</string>
    </property>
    <property name="text">
     <string>Password: </string>

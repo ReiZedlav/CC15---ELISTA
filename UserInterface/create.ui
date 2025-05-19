@@ -74,10 +74,13 @@ QPushButton#secondaryButton:hover {
     <font>
      <family>Inter</family>
      <pointsize>-1</pointsize>
+     <weight>75</weight>
+     <italic>false</italic>
+     <bold>true</bold>
     </font>
    </property>
    <property name="styleSheet">
-    <string notr="true">color: rgb(rgb(0, 0, 0)); font-size: 15px;
+    <string notr="true">color: #4F46E5; font-size: 15px; font: bold;
 </string>
    </property>
    <property name="text">
@@ -97,10 +100,14 @@ QPushButton#secondaryButton:hover {
     <font>
      <family>Inter</family>
      <pointsize>-1</pointsize>
+     <weight>75</weight>
+     <italic>false</italic>
+     <bold>true</bold>
     </font>
    </property>
    <property name="styleSheet">
-    <string notr="true">color: rgb(rgb(0, 0, 0)); font-size: 15px;</string>
+    <string notr="true">color: #4F46E5; font-size: 15px; font: bold;
+</string>
    </property>
    <property name="text">
     <string>Confirm Password:</string>
@@ -178,10 +185,14 @@ QPushButton#secondaryButton:hover {
     <font>
      <family>Inter</family>
      <pointsize>-1</pointsize>
+     <weight>75</weight>
+     <italic>false</italic>
+     <bold>true</bold>
     </font>
    </property>
    <property name="styleSheet">
-    <string notr="true">color: rgb(rgb(0, 0, 0)); font-size: 15px;</string>
+    <string notr="true">color: #4F46E5; font-size: 15px; font: bold;
+</string>
    </property>
    <property name="text">
     <string>Password:</string>
@@ -232,18 +243,22 @@ QPushButton#secondaryButton:hover {
     <rect>
      <x>60</x>
      <y>430</y>
-     <width>311</width>
+     <width>361</width>
      <height>21</height>
     </rect>
    </property>
    <property name="font">
     <font>
      <family>Inter</family>
+     <weight>75</weight>
+     <italic>false</italic>
+     <bold>true</bold>
     </font>
    </property>
    <property name="styleSheet">
     <string notr="true">QLabel {
     color: #EF4444;  /* Tailwind-style red */
+	font: bold;
 }
 </string>
    </property>
