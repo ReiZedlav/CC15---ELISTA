@@ -166,6 +166,24 @@ QCalendarWidget QAbstractItemView {
 }
 </string>
    </property>
+   <property name="gridVisible">
+    <bool>true</bool>
+   </property>
+   <property name="selectionMode">
+    <enum>QCalendarWidget::SingleSelection</enum>
+   </property>
+   <property name="horizontalHeaderFormat">
+    <enum>QCalendarWidget::SingleLetterDayNames</enum>
+   </property>
+   <property name="verticalHeaderFormat">
+    <enum>QCalendarWidget::NoVerticalHeader</enum>
+   </property>
+   <property name="navigationBarVisible">
+    <bool>true</bool>
+   </property>
+   <property name="dateEditEnabled">
+    <bool>false</bool>
+   </property>
   </widget>
   <widget class="QLabel" name="label_4">
    <property name="geometry">

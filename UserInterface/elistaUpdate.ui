@@ -562,10 +562,52 @@ QComboBox::down-arrow {
     border-radius: 8px; /* Apply rounded borders */
     padding: 2px; /* Add padding to ensure the text inside doesn’t touch the borders */
     border: 1px solid #ccc; /* Optional: Add a border around the widget */
-}</string>
+}
+
+QDateEdit::up-button:hover{
+    border: 1px solid #4F46E5;
+    background: transparent;
+}
+
+QDateEdit::down-button:hover{
+    border: 1px solid #4F46E5;
+    background: transparent;
+}
+
+QDateEdit::up-button:pressed{
+    border: 1px solid #4F46E5;
+    background-color: #4F46E5;
+}
+
+QDateEdit::down-button:pressed{
+    border: 1px solid #4F46E5;
+    background-color: #4F46E5;
+}
+
+QDateEdit::up-button {
+    border: none;
+}
+
+QDateEdit::down-button {
+    border: none;
+}
+
+QDateEdit::up-arrow {
+    image: url(&quot;C:/Users/ADMIN/Desktop/CC15---ELISTA/UserInterface/arrow-up.png&quot;);
+    width: 12px;
+    height: 12px;
+}
+
+QDateEdit::down-arrow {
+    image: url(&quot;C:/Users/Admin/Desktop/CC15---ELISTA/UserInterface/arrow-down.png&quot;);
+    width: 12px;
+    height: 12px;
+}
+
+</string>
    </property>
    <property name="buttonSymbols">
-    <enum>QAbstractSpinBox::NoButtons</enum>
+    <enum>QAbstractSpinBox::UpDownArrows</enum>
    </property>
   </widget>
   <widget class="QLabel" name="label_8">
