@@ -78,6 +78,7 @@ class ElistaCalendarOperation(QDialog):
         self.authenticatedNameLabel.setText(Database.getUsername(session))
 
         Effects.setShadowPurple(self.label)
+        Effects.setShadowPurple(self.calendarData)
 
 
         #create updating buttons
