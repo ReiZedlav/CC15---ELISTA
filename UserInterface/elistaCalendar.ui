@@ -160,6 +160,10 @@ QCalendarWidget {
 QCalendarWidget QAbstractItemView {
     alternate-background-color: #B8E2FF;
 }
+
+QCalendarWidget QAbstractItemView {
+    font-weight: bold;  /* Make all dates bold */
+}
 </string>
    </property>
   </widget>
@@ -168,7 +172,7 @@ QCalendarWidget QAbstractItemView {
     <rect>
      <x>250</x>
      <y>50</y>
-     <width>191</width>
+     <width>201</width>
      <height>71</height>
     </rect>
    </property>
@@ -176,13 +180,15 @@ QCalendarWidget QAbstractItemView {
     <font>
      <family>Inter</family>
      <pointsize>-1</pointsize>
-     <weight>50</weight>
-     <bold>false</bold>
+     <weight>75</weight>
+     <italic>false</italic>
+     <bold>true</bold>
     </font>
    </property>
    <property name="styleSheet">
     <string notr="true">font-size: 30px;
 color: #4F46E5;
+font: bold;
 </string>
    </property>
    <property name="text">
@@ -243,7 +249,7 @@ QComboBox::drop-down {
 }
 
 QComboBox::down-arrow {
-    image: url(&quot;C:/Users/Admin/Desktop/CC15---ELISTA-main/UserInterface/arrow-down.png&quot;);
+    image: url(&quot;C:/Users/Admin/Desktop/CC15---ELISTA/UserInterface/arrow-down.png&quot;);
     width: 12px;
     height: 12px;
 }</string>

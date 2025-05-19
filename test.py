@@ -1193,7 +1193,7 @@ class Utilities:
         else:
             threading.Thread(target=Soundtrack.authenticatedButtonSFX).start()
             print("User canceled logout.")
-
+    
     @staticmethod
     def successfulAction():
         msg = QMessageBox()

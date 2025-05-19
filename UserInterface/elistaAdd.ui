@@ -112,10 +112,19 @@ font-size: 30px;
     padding: 8px;  /* Padding inside the text area */
     border: 1px solid #ccc;  /* Optional: Add a border around the QTextEdit */
     background-color: #fff;  /* Optional: Background color */
-    overflow: hidden;  /* Hides the scrollbars */
 	font: bold;
 }
+
 </string>
+   </property>
+   <property name="inputMethodHints">
+    <set>Qt::ImhMultiLine</set>
+   </property>
+   <property name="verticalScrollBarPolicy">
+    <enum>Qt::ScrollBarAlwaysOff</enum>
+   </property>
+   <property name="horizontalScrollBarPolicy">
+    <enum>Qt::ScrollBarAlwaysOff</enum>
    </property>
    <property name="placeholderText">
     <string>Enter taskname here!</string>
@@ -215,7 +224,7 @@ QComboBox::drop-down {
 }
 
 QComboBox::down-arrow {
-    image: url(&quot;C:/Users/Admin/Desktop/CC15---ELISTA-main/UserInterface/arrow-down.png&quot;);
+    image: url(&quot;C:/Users/Admin/Desktop/CC15---ELISTA/UserInterface/arrow-down.png&quot;);
     width: 12px;
     height: 12px;
 }</string>
@@ -268,6 +277,9 @@ QComboBox::down-arrow {
     padding: 2px; /* Add padding to ensure the text inside doesn’t touch the borders */
     border: 1px solid #ccc; /* Optional: Add a border around the widget */
 }</string>
+   </property>
+   <property name="buttonSymbols">
+    <enum>QAbstractSpinBox::NoButtons</enum>
    </property>
    <property name="dateTime">
     <datetime>
