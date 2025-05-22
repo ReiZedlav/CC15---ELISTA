@@ -491,11 +491,15 @@ QPushButton#fourthAuthenticatedButton:hover {
     <font>
      <family>Inter</family>
      <pointsize>-1</pointsize>
+     <weight>75</weight>
+     <italic>false</italic>
+     <bold>true</bold>
     </font>
    </property>
    <property name="styleSheet">
     <string notr="true">font-size: 40px;
 color: #4F46E5;
+font: bold;
 </string>
    </property>
    <property name="text">

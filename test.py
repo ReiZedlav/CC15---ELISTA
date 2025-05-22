@@ -829,6 +829,7 @@ class Login(QDialog):
         self.createAccountButton.clicked.connect(self.visitSignupPage)
 
         Effects.setShadowPurple(self.label)
+        Effects.setShadowPurple(self.passwordLabel_2)
 
         #SET FAILS 
         Database.sanitizedEnforceDeadlines(str(datetime.datetime.today()).split()[0])
